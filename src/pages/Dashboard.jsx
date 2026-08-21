@@ -44,32 +44,53 @@ export default function Dashboard() {
 
   return (
     <div>
-      {/* HERO */}
-      <section className="paper-grain border-b border-navy-500/10 dark:border-gilt-400/10">
-        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
-          <p className="font-aksara text-sm uppercase tracking-[0.25em] text-gilt-500 dark:text-gilt-300">
-            Naskah · Manuskrip · Warisan Aksara
-          </p>
-          <h1 className="mt-3 max-w-2xl font-display text-3xl font-semibold leading-tight text-ink-900 dark:text-parchment-100 sm:text-4xl lg:text-5xl">
-            Menjaga dan menghadirkan koleksi langka Yogyakarta dalam satu katalog digital.
-          </h1>
-          <p className="mt-4 max-w-xl text-ink-800/70 dark:text-parchment-100/70">
-            Jelajahi 13.253 koleksi Ruang Langka Balai Layanan Perpustakaan Pemda DIY — dari
-            manuskrip beraksara Jawa hingga novel-novel lawas.
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link
-              to="/katalog"
-              className="rounded-lg bg-navy-500 px-5 py-2.5 text-sm font-semibold text-parchment-50 shadow-book transition-colors hover:bg-navy-600 dark:bg-gilt-400 dark:text-ink-900 dark:hover:bg-gilt-300"
-            >
-              Jelajahi Katalog
-            </Link>
-            <Link
-              to="/panduan/fasilitas"
-              className="rounded-lg border border-navy-500/25 px-5 py-2.5 text-sm font-semibold text-navy-600 transition-colors hover:bg-navy-500/5 dark:border-gilt-400/25 dark:text-gilt-300 dark:hover:bg-gilt-400/10"
-            >
-              Baca Panduan
-            </Link>
+      {/* HERO SECTION */}
+      <section className="relative overflow-hidden pt-12 pb-16 sm:pt-16 sm:pb-24 lg:pb-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+          {/* Grid Container 2 Kolom */}
+          <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-8 lg:gap-16">
+
+            {/* ===== KOLOM KIRI: TEKS & TOMBOL ===== */}
+            <div className="flex flex-col items-start text-left">
+              <h1 className="font-display text-4xl font-bold leading-tight text-ink-900 dark:text-parchment-50 sm:text-5xl lg:text-6xl lg:leading-[1.1]">
+                Menjaga Naskah, <br /> Menghidupkan Sejarah
+              </h1>
+
+              <p className="mt-6 max-w-xl text-lg text-ink-800/80 dark:text-parchment-100/70">
+                Jelajahi 13.253 koleksi Ruang Langka Balai Layanan Perpustakaan Pemda DIY mulai dari manuskrip bersejarah hingga literatur berusia lebih dari 50 tahun.
+              </p>
+
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link
+                  to="/katalog"
+                  className="rounded-lg bg-navy-500 px-5 py-2.5 text-sm font-semibold text-parchment-50 shadow-book transition-colors hover:bg-navy-600 dark:bg-gilt-400 dark:text-ink-900 dark:hover:bg-gilt-300"
+                >
+                  Jelajahi Katalog
+                </Link>
+                <Link
+                  to="/panduan/fasilitas"
+                  className="rounded-lg border border-navy-500/25 px-5 py-2.5 text-sm font-semibold text-navy-600 transition-colors hover:bg-navy-500/5 dark:border-gilt-400/25 dark:text-gilt-300 dark:hover:bg-gilt-400/10"
+                >
+                  Baca Panduan
+                </Link>
+              </div>
+            </div>
+
+            {/* ===== KOLOM KANAN: GAMBAR ===== */}
+            <div className="relative mx-auto w-full max-w-md md:max-w-none">
+              {/* Dekorasi latar belakang */}
+              <div className="absolute -inset-2 rounded-2xl bg-gradient-to-tr from-gilt-200/50 to-navy-200/50 blur-lg dark:from-gilt-900/30 dark:to-navy-900/30"></div>
+
+              {/* Kontainer Gambar Asli */}
+              <div className="relative aspect-[4/3] w-4/5 mx-auto overflow-hidden rounded-2xl shadow-xl ring-1 ring-ink-900/10 dark:ring-white/10">
+                <img
+                  src="assets/perpus.png"
+                  alt="Perpustakaan Grhatama"
+                  className="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-105"
+                />
+              </div>
+            </div>
           </div>
 
           {/* Ranking buku */}
