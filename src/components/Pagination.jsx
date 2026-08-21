@@ -33,8 +33,8 @@ export default function Pagination({ page, totalPages, onChange, total, limit })
   const btnBase =
     'grid h-9 min-w-[2.25rem] place-items-center rounded-lg px-2 text-sm font-medium transition-colors'
   const inactive =
-    'text-ink-800/70 hover:bg-maroon-500/10 dark:text-parchment-100/70 dark:hover:bg-gilt-400/10'
-  const active = 'bg-maroon-500 text-parchment-50 dark:bg-gilt-400 dark:text-ink-900'
+    'text-ink-800/70 hover:bg-navy-500/10 dark:text-parchment-100/70 dark:hover:bg-gilt-400/10'
+  const active = 'bg-navy-500 text-parchment-50 dark:bg-gilt-400 dark:text-ink-900'
 
   return (
     <nav className="mt-8 flex flex-col items-center gap-3" aria-label="Navigasi halaman">

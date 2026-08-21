@@ -28,19 +28,19 @@ export default function Navbar() {
     `px-3 py-2 text-sm font-medium tracking-wide transition-colors ${
       isActive
         ? 'text-gilt-500 dark:text-gilt-300'
-        : 'text-ink-800/80 hover:text-maroon-500 dark:text-parchment-100/80 dark:hover:text-gilt-300'
+        : 'text-ink-800/80 hover:text-navy-500 dark:text-parchment-100/80 dark:hover:text-gilt-300'
     }`
 
   return (
-    <header className="sticky top-0 z-50 border-b border-maroon-500/15 bg-parchment-50/90 backdrop-blur-md dark:border-gilt-400/10 dark:bg-ink-900/90">
+    <header className="sticky top-0 z-50 border-b border-navy-500/15 bg-parchment-50/90 backdrop-blur-md dark:border-gilt-400/10 dark:bg-ink-900/90">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
         {/* Judul & Subjudul */}
         <Link to="/" className="flex items-center gap-3 shrink-0">
-          <span className="grid h-10 w-10 place-items-center rounded-full bg-maroon-500 font-display text-lg text-gilt-300 shadow-book dark:bg-gilt-400 dark:text-maroon-700">
+          <span className="grid h-10 w-10 place-items-center rounded-full bg-navy-500 font-display text-lg text-gilt-300 shadow-book dark:bg-gilt-400 dark:text-navy-700">
             RL
           </span>
           <span className="leading-tight">
-            <span className="block font-display text-lg font-semibold text-maroon-600 dark:text-gilt-300 sm:text-xl">
+            <span className="block font-display text-lg font-semibold text-navy-600 dark:text-gilt-300 sm:text-xl">
               Koleksi Ruang Langka
             </span>
             <span className="block text-[11px] uppercase tracking-[0.14em] text-ink-800/60 dark:text-parchment-100/60 sm:text-xs">
@@ -63,7 +63,7 @@ export default function Navbar() {
               onClick={() => setDropdownOpen((v) => !v)}
               aria-expanded={dropdownOpen}
               aria-haspopup="true"
-              className="flex items-center gap-1 px-3 py-2 text-sm font-medium tracking-wide text-ink-800/80 transition-colors hover:text-maroon-500 dark:text-parchment-100/80 dark:hover:text-gilt-300"
+              className="flex items-center gap-1 px-3 py-2 text-sm font-medium tracking-wide text-ink-800/80 transition-colors hover:text-navy-500 dark:text-parchment-100/80 dark:hover:text-gilt-300"
             >
               Panduan
               <svg
@@ -75,13 +75,13 @@ export default function Navbar() {
               </svg>
             </button>
             {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-64 overflow-hidden rounded-xl border border-maroon-500/15 bg-parchment-50 shadow-book dark:border-gilt-400/15 dark:bg-ink-800">
+              <div className="absolute right-0 mt-2 w-64 overflow-hidden rounded-xl border border-navy-500/15 bg-parchment-50 shadow-book dark:border-gilt-400/15 dark:bg-ink-800">
                 {PANDUAN_LINKS.map((item) => (
                   <Link
                     key={item.to}
                     to={item.to}
                     onClick={() => setDropdownOpen(false)}
-                    className="block px-4 py-3 text-sm text-ink-800/85 transition-colors hover:bg-maroon-500/5 hover:text-maroon-600 dark:text-parchment-100/85 dark:hover:bg-gilt-400/10 dark:hover:text-gilt-300"
+                    className="block px-4 py-3 text-sm text-ink-800/85 transition-colors hover:bg-navy-500/5 hover:text-navy-600 dark:text-parchment-100/85 dark:hover:bg-gilt-400/10 dark:hover:text-gilt-300"
                   >
                     {item.label}
                   </Link>
@@ -97,7 +97,7 @@ export default function Navbar() {
             onClick={toggle}
             aria-label={isNight ? 'Aktifkan mode siang' : 'Aktifkan mode malam'}
             title={isNight ? 'Mode Siang' : 'Mode Malam'}
-            className="grid h-10 w-10 place-items-center rounded-full border border-maroon-500/20 bg-parchment-100 text-maroon-600 transition-colors hover:bg-maroon-500/10 dark:border-gilt-400/20 dark:bg-ink-800 dark:text-gilt-300 dark:hover:bg-gilt-400/10"
+            className="grid h-10 w-10 place-items-center rounded-full border border-navy-500/20 bg-parchment-100 text-navy-600 transition-colors hover:bg-navy-500/10 dark:border-gilt-400/20 dark:bg-ink-800 dark:text-gilt-300 dark:hover:bg-gilt-400/10"
           >
             {isNight ? (
               <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
@@ -125,7 +125,7 @@ export default function Navbar() {
 
       {/* Menu mobile */}
       {mobileOpen && (
-        <div className="border-t border-maroon-500/15 bg-parchment-50 px-4 py-3 md:hidden dark:border-gilt-400/10 dark:bg-ink-900">
+        <div className="border-t border-navy-500/15 bg-parchment-50 px-4 py-3 md:hidden dark:border-gilt-400/10 dark:bg-ink-900">
           <div className="flex flex-col">
             <NavLink to="/" end onClick={() => setMobileOpen(false)} className={linkClass}>
               Home

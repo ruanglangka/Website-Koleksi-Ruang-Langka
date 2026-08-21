@@ -7,12 +7,12 @@ export default function BookCard({ book, orientation = 'vertical' }) {
   return (
     <Link
       to={`/buku/${book.id}`}
-      className={`group flex overflow-hidden rounded-xl border border-maroon-500/12 bg-parchment-50 shadow-sm transition-all hover:-translate-y-1 hover:shadow-book dark:border-gilt-400/10 dark:bg-ink-800 ${
+      className={`group flex overflow-hidden rounded-xl border border-navy-500/12 bg-parchment-50 shadow-sm transition-all hover:-translate-y-1 hover:shadow-book dark:border-gilt-400/10 dark:bg-ink-800 ${
         isHorizontal ? 'flex-row items-center gap-4 p-3' : 'flex-col'
       }`}
     >
       <div
-        className={`grid place-items-center bg-gradient-to-br from-maroon-500/90 to-maroon-700 text-parchment-50 ${
+        className={`grid place-items-center bg-gradient-to-br from-navy-500/90 to-navy-700 text-parchment-50 ${
           isHorizontal ? 'h-16 w-12 shrink-0 rounded-md' : 'aspect-[3/4] w-full'
         }`}
       >
@@ -26,7 +26,7 @@ export default function BookCard({ book, orientation = 'vertical' }) {
         <span className="inline-block rounded-full bg-gilt-400/15 px-2 py-0.5 text-[11px] font-medium text-gilt-500 dark:text-gilt-300">
           {book.kategori}
         </span>
-        <h3 className="mt-1.5 truncate font-display text-base font-semibold text-ink-900 group-hover:text-maroon-600 dark:text-parchment-100 dark:group-hover:text-gilt-300">
+        <h3 className="mt-1.5 truncate font-display text-base font-semibold text-ink-900 group-hover:text-navy-600 dark:text-parchment-100 dark:group-hover:text-gilt-300">
           {book.judul}
         </h3>
         <p className="mt-0.5 truncate text-sm text-ink-800/60 dark:text-parchment-100/60">

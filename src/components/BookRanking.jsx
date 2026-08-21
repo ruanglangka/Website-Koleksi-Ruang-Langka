@@ -4,13 +4,13 @@ const RANKING = [
   {
     rank: 1,
     kategori: 'Manuskrip',
-    warna: 'from-maroon-500 to-maroon-700',
+    warna: 'from-navy-500 to-navy-700',
     keterangan: 'Naskah tulisan tangan tertua dalam koleksi, ditulis di atas lontar dan dluwang.',
   },
   {
     rank: 2,
     kategori: 'Novel',
-    warna: 'from-teal-500 to-teal-600',
+    warna: 'from-navy-400 to-navy-600',
     keterangan: 'Karya sastra cetak lawas yang menjadi saksi perkembangan bahasa dan budaya baca.',
   },
   {

@@ -17,7 +17,7 @@ export default function PanduanLayout({ eyebrow, title, children }) {
         {title}
       </h1>
 
-      <div className="mt-6 flex gap-1 overflow-x-auto border-b border-maroon-500/12 dark:border-gilt-400/10">
+      <div className="mt-6 flex gap-1 overflow-x-auto border-b border-navy-500/12 dark:border-gilt-400/10">
         {TABS.map((t) => (
           <NavLink
             key={t.to}
@@ -25,8 +25,8 @@ export default function PanduanLayout({ eyebrow, title, children }) {
             className={({ isActive }) =>
               `whitespace-nowrap border-b-2 px-3 py-2.5 text-sm font-medium transition-colors ${
                 isActive
-                  ? 'border-maroon-500 text-maroon-600 dark:border-gilt-400 dark:text-gilt-300'
-                  : 'border-transparent text-ink-800/60 hover:text-maroon-500 dark:text-parchment-100/60 dark:hover:text-gilt-300'
+                  ? 'border-navy-500 text-navy-600 dark:border-gilt-400 dark:text-gilt-300'
+                  : 'border-transparent text-ink-800/60 hover:text-navy-500 dark:text-parchment-100/60 dark:hover:text-gilt-300'
               }`
             }
           >
@@ -43,7 +43,7 @@ export default function PanduanLayout({ eyebrow, title, children }) {
 export function Section({ title, children }) {
   return (
     <section>
-      <h2 className="font-display text-lg font-semibold text-maroon-600 dark:text-gilt-300">{title}</h2>
+      <h2 className="font-display text-lg font-semibold text-navy-600 dark:text-gilt-300">{title}</h2>
       <div className="mt-2 space-y-3 text-sm leading-relaxed text-ink-800/80 dark:text-parchment-100/80">
         {children}
       </div>

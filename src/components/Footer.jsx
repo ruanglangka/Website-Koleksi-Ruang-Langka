@@ -25,10 +25,10 @@ const SOCIALS = [
 
 export default function Footer() {
   return (
-    <footer className="mt-16 border-t border-maroon-500/15 bg-parchment-100/60 dark:border-gilt-400/10 dark:bg-ink-800/60">
+    <footer className="mt-16 border-t border-navy-500/15 bg-parchment-100/60 dark:border-gilt-400/10 dark:bg-ink-800/60">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 md:grid-cols-3 lg:px-8">
         <div>
-          <h3 className="font-display text-lg font-semibold text-maroon-600 dark:text-gilt-300">
+          <h3 className="font-display text-lg font-semibold text-navy-600 dark:text-gilt-300">
             Koleksi Ruang Langka
           </h3>
           <p className="mt-2 text-sm text-ink-800/70 dark:text-parchment-100/70">
@@ -42,7 +42,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label={s.label}
-                className="grid h-9 w-9 place-items-center rounded-full border border-maroon-500/20 text-maroon-600 transition-colors hover:bg-maroon-500 hover:text-parchment-50 dark:border-gilt-400/20 dark:text-gilt-300 dark:hover:bg-gilt-400 dark:hover:text-ink-900"
+                className="grid h-9 w-9 place-items-center rounded-full border border-navy-500/20 text-navy-600 transition-colors hover:bg-navy-500 hover:text-parchment-50 dark:border-gilt-400/20 dark:text-gilt-300 dark:hover:bg-gilt-400 dark:hover:text-ink-900"
               >
                 {s.icon}
               </a>
@@ -70,7 +70,7 @@ export default function Footer() {
           </ul>
         </div>
       </div>
-      <div className="border-t border-maroon-500/10 py-4 text-center text-xs text-ink-800/50 dark:border-gilt-400/10 dark:text-parchment-100/50">
+      <div className="border-t border-navy-500/10 py-4 text-center text-xs text-ink-800/50 dark:border-gilt-400/10 dark:text-parchment-100/50">
         © {new Date().getFullYear()} Balai Layanan Perpustakaan Pemda DIY — Koleksi Ruang Langka
       </div>
     </footer>
