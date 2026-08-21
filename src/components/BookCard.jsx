@@ -1,0 +1,43 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
+
+export default function BookCard({ book, orientation = 'vertical' }) {
+  const isHorizontal = orientation === 'horizontal'
+
+  return (
+    <Link
+      to={`/buku/${book.id}`}
+      className={`group flex overflow-hidden rounded-xl border border-maroon-500/12 bg-parchment-50 shadow-sm transition-all hover:-translate-y-1 hover:shadow-book dark:border-gilt-400/10 dark:bg-ink-800 ${
+        isHorizontal ? 'flex-row items-center gap-4 p-3' : 'flex-col'
+      }`}
+    >
+      <div
+        className={`grid place-items-center bg-gradient-to-br from-maroon-500/90 to-maroon-700 text-parchment-50 ${
+          isHorizontal ? 'h-16 w-12 shrink-0 rounded-md' : 'aspect-[3/4] w-full'
+        }`}
+      >
+        {book.sampul ? (
+          <img src={book.sampul} alt={book.judul} className="h-full w-full object-cover" />
+        ) : (
+          <span className="font-display text-xs opacity-70">Tanpa Sampul</span>
+        )}
+      </div>
+      <div className={isHorizontal ? 'min-w-0 flex-1' : 'p-4'}>
+        <span className="inline-block rounded-full bg-gilt-400/15 px-2 py-0.5 text-[11px] font-medium text-gilt-500 dark:text-gilt-300">
+          {book.kategori}
+        </span>
+        <h3 className="mt-1.5 truncate font-display text-base font-semibold text-ink-900 group-hover:text-maroon-600 dark:text-parchment-100 dark:group-hover:text-gilt-300">
+          {book.judul}
+        </h3>
+        <p className="mt-0.5 truncate text-sm text-ink-800/60 dark:text-parchment-100/60">
+          {book.penulis}
+        </p>
+        {!isHorizontal && (
+          <p className="mt-1 text-xs text-ink-800/50 dark:text-parchment-100/50">
+            Tahun {book.tahun} · {book.bahasa}
+          </p>
+        )}
+      </div>
+    </Link>
+  )
+}
