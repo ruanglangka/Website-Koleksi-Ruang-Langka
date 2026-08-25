@@ -2,42 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
-/* --- Base & Typography --- */
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  font-family: "Plus Jakarta Sans", sans-serif;
+  @apply bg-parchment-50 text-ink-900 font-body transition-colors duration-500;
 }
 
-h1, h2, h3, h4, .font-display {
-  font-family: "Cormorant Garamond", serif;
-}
-
-/* --- Dark Mode Default --- */
 .dark body {
   @apply bg-ink-900 text-parchment-100;
 }
 
-/* --- Accessibility & Focus States --- */
 ::selection {
-  /* Menggunakan warna tema dari kode pertama */
-  @apply bg-gilt-400/40;
+  background: #BFDBFA;
+  color: #0F213F;
 }
 
-/* Fokus keyboard yang jelas untuk aksesibilitas */
+/* Focus visibility for accessibility */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 select:focus-visible {
-  /* Menggunakan warna tema pertama, dengan radius dari kode kedua */
-  outline: 2px solid theme('colors.gilt.400');
+  outline: 2px solid #2F6FED;
   outline-offset: 2px;
   border-radius: 4px;
 }
 
-/* --- Custom Scrollbar --- */
+/* Scrollbar tipis */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -53,18 +45,47 @@ select:focus-visible {
   background: #1E2A44;
 }
 
-/* --- Background Utilities --- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* Subtle paper grain background used on hero sections */
 .paper-grain {
-  background-image: radial-gradient(rgba(107, 39, 55, 0.07) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(30, 70, 112, 0.07) 1px, transparent 1px);
   background-size: 16px 16px;
 }
 
+/* Mode malam: gradasi biru tua → hitam di belakang titik-titik dekoratif,
+   memberi kesan lebih dramatis/dalam dibanding warna solid. */
 .dark .paper-grain {
-  background-image: radial-gradient(rgba(228, 199, 123, 0.08) 1px, transparent 1px);
+  background-image:
+    radial-gradient(rgba(228, 199, 123, 0.08) 1px, transparent 1px),
+    linear-gradient(180deg, #142339 0%, #0D1626 38%, #000000 100%);
+  background-size: 16px 16px, 100% 100%;
+  background-repeat: repeat, no-repeat;
 }
 
-/* --- Line Clamp Utilities --- */
+/* Book spine hover/press animation used in ranking section */
+.book-spine {
+  transform-style: preserve-3d;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease;
+}
+
+.book-spine:hover {
+  transform: translateY(-10px) rotate(-1.5deg);
+}
+
+.book-spine.is-open {
+  transform: translateY(-14px) rotateY(-18deg) scale(1.03);
+}
+
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -81,36 +102,71 @@ select:focus-visible {
   overflow: hidden;
 }
 
-/* --- 3D Book Animations --- */
-/* Perspektif 3D untuk animasi buku ranking */
-.perspective {
-  perspective: 1200px;
-}
-
-.book-spine {
-  transform-style: preserve-3d;
-  /* Menggabungkan transisi dari kedua kode */
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease;
-  transform-origin: left center;
-}
-
-.book-spine:hover {
-  transform: translateY(-10px) rotate(-1.5deg);
-}
-
-.book-spine.is-open {
-  /* Menggabungkan rotasi, translasi, dan skala dari kedua kode */
-  transform: rotateY(-25deg) translateY(-14px) translateX(-6px) scale(1.03);
-}
-
-/* --- Reduced Motion for Accessibility --- */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
+/* Entrance animation untuk kartu podium ranking di dashboard */
+@keyframes podium-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.podium-card {
+  animation: podium-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ===== Efek "buku fisik" untuk kartu podium ranking ===== */
+
+/* Konteks 3D — bungkus setiap buku agar rotasi terlihat punya kedalaman */
+.book-perspective {
+  perspective: 1100px;
+}
+
+/* Buku bersandar miring seperti di rak; tegak & terangkat saat hover;
+   berputar seolah ditarik keluar saat ditekan (is-open). */
+.book-tilt {
+  transform: perspective(1100px) rotateY(7deg);
+  transform-origin: left center;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease;
+}
+
+.book-tilt:hover {
+  transform: perspective(1100px) rotateY(1deg) translateY(-8px);
+}
+
+.book-tilt.is-open {
+  transform: perspective(1100px) rotateY(-16deg) translateY(-12px) scale(1.03);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book-tilt,
+  .book-tilt:hover,
+  .book-tilt.is-open {
+    transform: none;
+  }
+}
+
+/* Bayangan jilid/spine di sisi kiri sampul */
+.book-spine-shadow {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 14px;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
+  pointer-events: none;
+}
+
+/* Tepi halaman di sisi kanan sampul */
+.book-page-edge {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  right: 0;
+  width: 6px;
+  background: repeating-linear-gradient(180deg, #f3e9d2 0 2px, #d8c69b 2px 3px);
+  box-shadow: -1px 0 4px rgba(0, 0, 0, 0.28);
+  border-radius: 0 6px 6px 0;
+  pointer-events: none;
 }

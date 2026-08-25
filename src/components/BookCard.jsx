@@ -7,7 +7,7 @@ export default function BookCard({ book, orientation = 'vertical' }) {
   return (
     <Link
       to={`/buku/${book.id}`}
-      className={`group flex overflow-hidden rounded-xl border border-navy-500/12 bg-parchment-50 shadow-sm transition-all hover:-translate-y-1 hover:shadow-book dark:border-gilt-400/10 dark:bg-ink-800 ${
+      className={`group flex overflow-hidden rounded-xl border border-navy-500/10 bg-parchment-50 shadow-card transition-all hover:-translate-y-1 hover:border-navy-500/25 hover:shadow-book dark:border-obsidian-border dark:bg-obsidian-card dark:shadow-card-dark dark:hover:border-gilt-400/30 ${
         isHorizontal ? 'flex-row items-center gap-4 p-3' : 'flex-col'
       }`}
     >
