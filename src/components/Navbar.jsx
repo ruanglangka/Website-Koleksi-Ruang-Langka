@@ -5,6 +5,7 @@ import { useTheme } from '../context/ThemeContext.jsx'
 const PANDUAN_LINKS = [
   { to: '/panduan/fasilitas', label: 'Fasilitas Ruang Langka' },
   { to: '/panduan/koleksi', label: 'Koleksi Buku Langka' },
+  { to: '/panduan/perawatan', label: 'Perawatan Koleksi Langka' },
   { to: '/panduan/layanan', label: 'Layanan & Tata Tertib' },
 ]
 

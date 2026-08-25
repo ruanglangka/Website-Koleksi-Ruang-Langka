@@ -2,18 +2,15 @@ import React from 'react'
 
 export function LoadingGrid({ count = 8 }) {
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
-          className="animate-pulse overflow-hidden rounded-xl border border-navy-500/10 bg-parchment-100 dark:border-gilt-400/10 dark:bg-ink-800"
+          className="animate-pulse space-y-2 rounded-xl border border-navy-500/10 bg-parchment-100 p-4 dark:border-gilt-400/10 dark:bg-ink-800"
         >
-          <div className="aspect-[3/4] w-full bg-navy-500/10 dark:bg-gilt-400/10" />
-          <div className="space-y-2 p-4">
-            <div className="h-3 w-1/3 rounded bg-navy-500/15 dark:bg-gilt-400/15" />
-            <div className="h-4 w-4/5 rounded bg-navy-500/15 dark:bg-gilt-400/15" />
-            <div className="h-3 w-2/5 rounded bg-navy-500/15 dark:bg-gilt-400/15" />
-          </div>
+          <div className="h-3 w-1/5 rounded bg-navy-500/15 dark:bg-gilt-400/15" />
+          <div className="h-4 w-3/5 rounded bg-navy-500/15 dark:bg-gilt-400/15" />
+          <div className="h-3 w-2/5 rounded bg-navy-500/15 dark:bg-gilt-400/15" />
         </div>
       ))}
     </div>

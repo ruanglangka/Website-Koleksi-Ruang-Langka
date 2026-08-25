@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom'
 const TABS = [
   { to: '/panduan/fasilitas', label: 'Fasilitas' },
   { to: '/panduan/koleksi', label: 'Koleksi' },
+  { to: '/panduan/perawatan', label: 'Perawatan' },
   { to: '/panduan/layanan', label: 'Layanan & Tata Tertib' },
 ]
 

@@ -129,19 +129,34 @@ function handleList(params) {
   const rows = getAllRows();
 
   const search = String(params.search || '').toLowerCase().trim();
+  // Field yang dipilih user di dropdown "Cari berdasarkan" (ala OPAC):
+  // semua | judul | penulis | kategori | tahun | lokasiRak | id
+  const searchField = String(params.searchField || 'semua').trim();
   const kategori = String(params.kategori || '').trim();
   const sortBy = String(params.sortBy || 'judul');
   const sortDir = String(params.sortDir || 'asc');
   const page = Math.max(1, parseInt(params.page, 10) || 1);
   const limit = Math.min(100, Math.max(1, parseInt(params.limit, 10) || 20));
 
+  // Field yang boleh dicari secara spesifik. Tambahkan nama kolom lain di
+  // sini (mis. "penerbit", "isbn") jika kolom tsb sudah ada di Spreadsheet.
+  const SEARCHABLE_FIELDS = ['judul', 'penulis', 'kategori', 'tahun', 'lokasiRak', 'id'];
+
   let filtered = rows;
   if (search) {
-    filtered = filtered.filter((r) => {
-      const judul = String(r.judul || '').toLowerCase();
-      const penulis = String(r.penulis || '').toLowerCase();
-      return judul.indexOf(search) !== -1 || penulis.indexOf(search) !== -1;
-    });
+    if (searchField && searchField !== 'semua' && SEARCHABLE_FIELDS.indexOf(searchField) !== -1) {
+      filtered = filtered.filter((r) => {
+        const value = String(r[searchField] || '').toLowerCase();
+        return value.indexOf(search) !== -1;
+      });
+    } else {
+      filtered = filtered.filter((r) => {
+        return SEARCHABLE_FIELDS.some((field) => {
+          const value = String(r[field] || '').toLowerCase();
+          return value.indexOf(search) !== -1;
+        });
+      });
+    }
   }
   if (kategori) {
     filtered = filtered.filter((r) => String(r.kategori || '') === kategori);

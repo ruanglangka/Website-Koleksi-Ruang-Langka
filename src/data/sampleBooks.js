@@ -27,7 +27,17 @@ function generate(n) {
 
 const ALL_BOOKS = generate(13253)
 
-export function getMockResponse({ action, page = 1, limit = 20, search = '', kategori = '', sortBy = 'judul', sortDir = 'asc', id }) {
+export function getMockResponse({
+  action,
+  page = 1,
+  limit = 20,
+  search = '',
+  searchField = 'semua',
+  kategori = '',
+  sortBy = 'judul',
+  sortDir = 'asc',
+  id,
+}) {
   if (action === 'categories') {
     return { categories: KATEGORI }
   }
@@ -42,9 +52,20 @@ export function getMockResponse({ action, page = 1, limit = 20, search = '', kat
   let filtered = ALL_BOOKS
   if (search) {
     const q = search.toLowerCase()
-    filtered = filtered.filter(
-      (b) => b.judul.toLowerCase().includes(q) || b.penulis.toLowerCase().includes(q)
-    )
+    filtered = filtered.filter((b) => {
+      if (searchField === 'semua') {
+        return (
+          b.judul.toLowerCase().includes(q) ||
+          b.penulis.toLowerCase().includes(q) ||
+          b.kategori.toLowerCase().includes(q) ||
+          String(b.tahun).includes(q) ||
+          b.lokasiRak.toLowerCase().includes(q) ||
+          b.id.toLowerCase().includes(q)
+        )
+      }
+      const value = b[searchField]
+      return value !== undefined && String(value).toLowerCase().includes(q)
+    })
   }
   if (kategori) {
     filtered = filtered.filter((b) => b.kategori === kategori)
