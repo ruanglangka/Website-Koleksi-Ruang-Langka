@@ -62,7 +62,6 @@ const FEATURED_BOOKS_DATA = [
 ]
 
 export default function Dashboard() {
-  // Menggunakan data hardcode langsung, tidak perlu useEffect atau status loading lagi
   const [featured] = useState(FEATURED_BOOKS_DATA) 
   const [logoFailed, setLogoFailed] = useState(false)
 
@@ -129,7 +128,6 @@ export default function Dashboard() {
           </Link>
         </div>
 
-        {/* Karena data sudah di-hardcode, langsung di-render (tanpa loading/error state) */}
         <div className="flex flex-col gap-4">
           {featured.map((book) => (
             <FeaturedBookCard key={book.id} book={book} />
@@ -148,7 +146,8 @@ export default function Dashboard() {
               <Link
                 key={card.to}
                 to={card.to}
-                className="group rounded-xl border border-navy-500/12 bg-parchment-50 p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-book dark:border-gilt-400/10 dark:bg-ink-900"
+                // DARI SINI: bg-parchment-50 diubah ke bg-card dan dark:bg-ink-900 diubah ke dark:bg-card-dark
+                className="group rounded-xl border border-navy-500/12 bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-book dark:border-gilt-400/10 dark:bg-card-dark"
               >
                 <h3 className="font-display text-lg font-semibold text-navy-600 group-hover:underline dark:text-gilt-300">
                   {card.title}

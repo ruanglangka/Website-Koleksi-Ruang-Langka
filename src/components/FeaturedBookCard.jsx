@@ -2,8 +2,7 @@ import React from 'react'
 
 export default function FeaturedBookCard({ book }) {
   return (
-    // Mengganti <Link> menjadi <div> dan menghapus atribut "to=..."
-    <div className="group flex gap-4 rounded-xl border border-navy-500/12 bg-parchment-50 p-4 shadow-sm transition-all hover:-translate-y-1 hover:shadow-book dark:border-gilt-400/10 dark:bg-ink-800 sm:gap-6 sm:p-5">
+    <div className="group flex gap-4 rounded-xl border border-navy-500/12 bg-card p-4 shadow-sm transition-all hover:-translate-y-1 hover:shadow-book dark:border-gilt-400/10 dark:bg-card-dark sm:gap-6 sm:p-5">
       
       {/* Cover di kiri */}
       <div className="aspect-[3/4] w-24 shrink-0 overflow-hidden rounded-lg shadow-md sm:w-32">

@@ -44,9 +44,8 @@ const SOCIALS = [
 
 export default function Footer() {
   return (
-    <footer className="mt-20 border-t border-navy-500/15 bg-parchment-100/40 dark:border-gilt-400/10 dark:bg-ink-900/40">
+    <footer className="mt-20 border-t border-navy-500/15 bg-navy-50 dark:border-gilt-400/15 dark:bg-ink-800">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        {/* Grid 3 Kolom */}
         <div className="grid grid-cols-1 gap-10 md:grid-cols-3 lg:gap-12">
           
           {/* ===== KOLOM 1: IDENTITAS & SOSIAL MEDIA ===== */}
@@ -54,7 +53,8 @@ export default function Footer() {
             <h3 className="font-display text-2xl font-bold text-navy-700 dark:text-gilt-300">
               Koleksi Ruang Langka
             </h3>
-            <p className="mt-3 text-sm leading-relaxed text-ink-800/70 dark:text-parchment-100/70">
+            {/* Warna teks diubah menyerupai teks diagram (ink-900 / parchment-100) */}
+            <p className="mt-3 text-sm leading-relaxed text-ink-900/80 dark:text-parchment-100/80">
               Eksplorasi warisan literasi Nusantara. Dikelola resmi oleh Balai Layanan Perpustakaan (Grhatama Pustaka) Pemda DIY.
             </p>
             <div className="mt-6 flex gap-3">
@@ -75,22 +75,21 @@ export default function Footer() {
 
          {/* ===== KOLOM 2: ALAMAT ===== */}
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-navy-600 dark:text-gilt-400">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-navy-700 dark:text-gilt-400">
               Lokasi Kami
             </h4>
-            <div className="mt-5 flex items-start gap-3 text-sm text-ink-800/75 dark:text-parchment-100/75">
+            <div className="mt-5 flex items-start gap-3 text-sm text-ink-900/90 dark:text-parchment-100/90">
               {/* Ikon Pin Lokasi */}
-              <svg className="mt-0.5 h-5 w-5 shrink-0 text-navy-500/70 dark:text-gilt-400/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+              <svg className="mt-0.5 h-5 w-5 shrink-0 text-navy-500 dark:text-gilt-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
               </svg>
               
-              {/* Teks Alamat (Bisa Diklik) */}
               <a 
                 href="https://maps.app.goo.gl/PDuzHWvR1i565akP7" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="leading-relaxed transition-colors hover:text-navy-600 hover:underline hover:underline-offset-4 dark:hover:text-gilt-400"
+                className="leading-relaxed transition-colors hover:text-navy-600 hover:underline hover:underline-offset-4 dark:hover:text-gilt-300"
               >
                 Jl. Janti, Wonocatur, Banguntapan,<br />
                 Bantul, Daerah Istimewa Yogyakarta<br />
@@ -101,42 +100,38 @@ export default function Footer() {
 
           {/* ===== KOLOM 3: KONTAK ===== */}
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-navy-600 dark:text-gilt-400">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-navy-700 dark:text-gilt-400">
               Hubungi Kami
             </h4>
-            <ul className="mt-5 space-y-4 text-sm text-ink-800/75 dark:text-parchment-100/75">
+            <ul className="mt-5 space-y-4 text-sm text-ink-900/90 dark:text-parchment-100/90">
               
-              {/* Telepon / WhatsApp */}
               <li className="flex items-center gap-3">
                 {/* Ikon Telepon */}
-                <svg className="h-5 w-5 shrink-0 text-navy-500/70 dark:text-gilt-400/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                <svg className="h-5 w-5 shrink-0 text-navy-500 dark:text-gilt-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.596-5.48-4.08-7.074-6.971l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
                 </svg>
                 
-                {/* Teks Nomor (Bisa Diklik ke WA) */}
                 <a 
                   href="https://wa.me/628812658192" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="transition-colors hover:text-navy-600 hover:underline hover:underline-offset-4 dark:hover:text-gilt-400"
+                  className="transition-colors hover:text-navy-600 hover:underline hover:underline-offset-4 dark:hover:text-gilt-300"
                 >
                   (+62) 8812-6581-92
                 </a>
               </li>
               
-              {/* Email */}
               <li className="flex items-center gap-3">
                 {/* Ikon Amplop */}
-                <svg className="h-5 w-5 shrink-0 text-navy-500/70 dark:text-gilt-400/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                <svg className="h-5 w-5 shrink-0 text-navy-500 dark:text-gilt-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                 </svg>
                 
-                {/* Teks Email (Bisa Diklik ke Aplikasi Email) */}
             <a 
                   href="https://mail.google.com/mail/?view=cm&fs=1&to=balaiyanpus@jogjaprov.go.id" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="transition-colors hover:text-navy-600 hover:underline hover:underline-offset-4 dark:hover:text-gilt-400"
+                  className="transition-colors hover:text-navy-600 hover:underline hover:underline-offset-4 dark:hover:text-gilt-300"
                 >
                   balaiyanpus@jogjaprov.go.id
                 </a>
@@ -148,7 +143,7 @@ export default function Footer() {
       </div>
 
       {/* ===== COPYRIGHT BAR ===== */}
-      <div className="border-t border-navy-500/10 py-6 text-center text-xs text-ink-800/60 dark:border-gilt-400/10 dark:text-parchment-100/50">
+      <div className="border-t border-navy-500/15 py-6 text-center text-xs text-ink-900/60 dark:border-gilt-400/15 dark:text-parchment-100/60">
         © {new Date().getFullYear()} Balai Layanan Perpustakaan Pemda DIY — Koleksi Ruang Langka
       </div>
     </footer>
