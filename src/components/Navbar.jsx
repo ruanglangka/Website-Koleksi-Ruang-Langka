@@ -38,22 +38,32 @@ export default function Navbar() {
         
         {/* ===== KIRI: LOGO & JUDUL ===== */}
         <Link to="/" className="flex items-center gap-4 shrink-0">
-          <span className="flex h-12 w-12 items-center justify-center rounded-md bg-heritage-700 text-gilt-400 dark:bg-obsidian-card">
-            <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.8">
-              <path d="M4 5.5C6.5 3.8 10 3.8 12 5.5v13c-2-1.7-5.5-1.7-8 0v-13z" />
-              <path d="M20 5.5c-2.5-1.7-6-1.7-8 0v13c2-1.7 5.5-1.7 8 0v-13z" />
-            </svg>
-          </span>
+        <span className="flex h-12 w-12 items-center justify-center rounded-md bg-heritage-700 dark:bg-obsidian-card overflow-hidden">
           
-          <span className="leading-tight">
-            <span className="block font-display text-2xl sm:text-3xl font-bold text-heritage-800 dark:text-heritage-50">
-              Koleksi Ruang Langka
-            </span>
-            <span className="block text-[9px] uppercase tracking-[0.15em] text-ink-800/60 dark:text-parchment-100/60 sm:text-[10px]">
-              Balai Layanan Perpustakaan Pemda DIY
-            </span>
+          {/* Gambar Light Mode (muncul saat terang, sembunyi saat gelap) */}
+          <img 
+            src="assets/day.png" 
+            alt="Logo Karsa Siang" 
+            className="h-15 w-15 object-contain block dark:hidden" 
+          />
+          {/* Gambar Dark Mode (sembunyi saat terang, muncul saat gelap) */}
+          <img 
+            src="assets/night.png" 
+            alt="Logo Karsa Malam" 
+            className="h-15 w-15 object-contain hidden dark:block" 
+          />
+
+        </span>
+        
+        <span className="leading-tight">
+          <span className="block font-display text-2xl sm:text-3xl font-bold text-heritage-800 dark:text-heritage-50">
+            Koleksi Ruang Langka
           </span>
-        </Link>
+          <span className="block text-[9px] uppercase tracking-[0.15em] text-ink-800/60 dark:text-parchment-100/60 sm:text-[10px]">
+            Balai Layanan Perpustakaan Pemda DIY
+          </span>
+        </span>
+      </Link>
 
         {/* ===== KANAN: MENU & TOMBOL (DIBUNGKUS DALAM SATU DIV) ===== */}
         <div className="flex items-center gap-4 lg:gap-8 ml-auto">

@@ -170,3 +170,18 @@ select:focus-visible {
   border-radius: 0 6px 6px 0;
   pointer-events: none;
 }
+
+@keyframes point-slide {
+  0%,
+  100% {
+    transform: translateX(-10px);
+  }
+  50% {
+    transform: translateX(10px);
+  }
+}
+
+.point-loop {
+  animation: point-slide 3.5s ease-in-out infinite alternate;
+  transform-origin: 50% 100%;
+}

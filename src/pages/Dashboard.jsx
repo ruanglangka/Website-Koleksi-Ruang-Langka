@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import BookRanking from '../components/BookRanking.jsx'
 import FeaturedBookCard from '../components/FeaturedBookCard.jsx'
+import AnimatedLogo from '../components/Mascot/Animated.jsx'; 
+import AnimatedPoint from '../components/Mascot/AnimatedPoint.jsx'; 
 
 function resolveSrc(path) {
   return `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`
@@ -11,12 +13,17 @@ const PANDUAN_CARDS = [
   {
     to: '/panduan/fasilitas',
     title: 'Fasilitas Ruang Langka',
-    desc: 'Kenali ruang baca, peralatan digitalisasi, dan fasilitas pendukung lainnya.',
+    desc: 'Ketahui ruang langka, syarat layanan baca, dan fasilitas pendukung lainnya',
   },
   {
     to: '/panduan/koleksi',
     title: 'Koleksi Buku Langka',
-    desc: 'Pelajari ciri, klasifikasi, dan cara perawatan koleksi naskah kuno.',
+    desc: 'Pelajari ciri, klasifikasi, dan contoh koleksi naskah kuno.',
+  },
+  {
+    to: '/panduan/perawatan',
+    title: 'Perawatan Koleksi ',
+    desc: 'Kenali jenis, prosedur perawatan, dan alat yang dipakai untuk menjaga kelestarian koleksi',
   },
   {
     to: '/panduan/layanan',
@@ -82,7 +89,7 @@ export default function Dashboard() {
                 Menghidupkan Sejarah
               </h1>
               <p className="mt-4 max-w-xl text-ink-800/70 dark:text-parchment-100/70">
-                Jelajahi 13.253 koleksi Ruang Langka Balai Layanan Perpustakaan Pemda DIY mulai dari manuskrip bersejarah hingga literatur berusia lebih dari 50 tahun.
+                Jelajahi koleksi Ruang Langka Balai Layanan Perpustakaan Pemda DIY mulai dari manuskrip bersejarah hingga literatur berusia lebih dari 50 tahun.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
@@ -101,11 +108,9 @@ export default function Dashboard() {
             </div>
 
             {!logoFailed && (
-              <img
-                src={resolveSrc('assets/penyu.png')}
-                alt="Logo Ruang Langka"
+              <AnimatedLogo
                 onError={() => setLogoFailed(true)}
-                className="h-40 w-40 shrink-0 object-contain sm:h-56 sm:w-56 lg:h-72 lg:w-72 lg:mr-16"
+                className="h-40 w-40 shrink-0 sm:h-56 sm:w-56 lg:h-72 lg:w-72 lg:mr-16"
               />
             )}
           </div>
@@ -123,8 +128,25 @@ export default function Dashboard() {
           <h2 className="font-display text-xl font-semibold text-ink-900 dark:text-parchment-100">
             Koleksi Pilihan
           </h2>
-          <Link to="/katalog" className="text-sm font-medium text-navy-600 hover:underline dark:text-gilt-300">
-            Lihat semua →
+          <Link 
+            to="/katalog" 
+            className="inline-flex items-center gap-1 text-sm font-medium text-navy-600 hover:underline dark:text-gilt-300"
+          >
+            Lihat semua
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              width="16" 
+              height="16" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            >
+              <path d="M5 12h14"/>
+              <path d="m12 5 7 7-7 7"/>
+            </svg>
           </Link>
         </div>
 
@@ -135,26 +157,45 @@ export default function Dashboard() {
         </div>
       </section>
 
-      {/* Kartu panduan */}
-      <section className="bg-parchment-100/50 py-14 dark:bg-ink-800/40">
+     {/* Kartu panduan */}
+      <section className="border-t border-navy-500/10 py-14 dark:border-gilt-400/10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-6 font-display text-xl font-semibold text-ink-900 dark:text-parchment-100">
-            Sebelum Berkunjung, Baca Panduan
-          </h2>
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
-            {PANDUAN_CARDS.map((card) => (
-              <Link
-                key={card.to}
-                to={card.to}
-                // DARI SINI: bg-parchment-50 diubah ke bg-card dan dark:bg-ink-900 diubah ke dark:bg-card-dark
-                className="group rounded-xl border border-navy-500/12 bg-card p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-book dark:border-gilt-400/10 dark:bg-card-dark"
-              >
-                <h3 className="font-display text-lg font-semibold text-navy-600 group-hover:underline dark:text-gilt-300">
-                  {card.title}
-                </h3>
-                <p className="mt-2 text-sm text-ink-800/70 dark:text-parchment-100/70">{card.desc}</p>
-              </Link>
-            ))}
+          {/* Header section */}
+          <div className="mb-10 max-w-2xl">
+            <span className="mb-2 inline-block text-xs font-semibold uppercase tracking-[0.2em] text-gilt-500 dark:text-gilt-400">
+              Panduan Eksplorasi
+            </span>
+            <h2 className="font-display text-2xl font-semibold text-ink-900 sm:text-3xl dark:text-parchment-100">
+              Mulai Jelajahi Koleksi
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-ink-800/70 dark:text-parchment-100/70">
+              Maksimalkan kunjungan Anda. Ketahui fasilitas yang tersedia dan patuhi tata tertib untuk menjaga kelestarian koleksi berharga di sini.
+            </p>
+          </div>
+          <div className="flex flex-col items-center gap-8 lg:flex-row lg:items-end">
+            {/* Maskot penyu menunjuk */}
+            <div className="shrink-0">
+              <AnimatedPoint className="h-32 w-32 sm:h-40 sm:w-40 lg:h-48 lg:w-48" />
+            </div>
+
+            <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {PANDUAN_CARDS.map((card) => (
+                <Link
+                  key={card.to}
+                  to={card.to}
+                  className="group relative overflow-hidden rounded-xl border border-navy-500/10 bg-navy-50 p-6 shadow-card transition-all hover:-translate-y-1 hover:border-navy-500/25 hover:shadow-book dark:border-obsidian-border dark:bg-obsidian-card dark:shadow-card-dark dark:hover:border-gilt-400/30"
+                >
+                  <span
+                    className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-navy-500 via-gilt-400 to-navy-500 dark:from-gilt-500 dark:via-gilt-300 dark:to-gilt-500"
+                    aria-hidden="true"
+                  />
+                  <h3 className="font-display text-lg font-semibold text-navy-600 group-hover:underline dark:text-gilt-300">
+                    {card.title}
+                  </h3>
+                  <p className="mt-2 text-sm text-ink-800/70 dark:text-parchment-100/70">{card.desc}</p>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>
