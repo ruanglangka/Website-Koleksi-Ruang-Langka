@@ -43,7 +43,7 @@ const FEATURED_BOOKS_DATA = [
     subject: 'Dongeng',
     language: 'Jawa',
     coverUrl: 'assets/dongeng_koetjing_setiwelan.png', 
-    description: 'Buku cerita klasik terjemahan lawas dari dongeng "Puss in Boots". Mengisahkan petualangan seekor kucing cerdik bersepatu bot yang membantu majikannya yang miskin meraih kekayaan dan gelar bangsawan.',
+    description: 'Kucing Setiwelan merupakan dongeng adaptasi dari karya sastra "Puss in Boot" dengan versi bahasa jawa dan aksara jawa. Arti dari kata setiwelan ini adalah sepatu atau "steviuel" dalam bahasa belanda. Jadi untuk judul buku inimerupakan alih bahasa dari versi aslinya kedalam bahasa jawa. Buku ini, layaknya buku dongeng untuk anak-anak, yang dihiasi dengan ilustrasi yang mempesona dan penuh imajinasi. Tak hanya itu, setiap halamannya juga diperkaya dengan hiasan-hiasan yang indah. Yang menarik, untuk versi Jawa ini, ilustrasi yang digunakan mengusung nuansa Arab-Islam. Hal tersebut terlihat pada ornamen gambar yang menghiasi buku tersebut. Dalam versi Jawa, kucing itu disebut "Si Mulus", sementara tuannya yang asli bernama "Usman" lebih dikenal dengan julukan "Wuragil" atau "Si anak bungsu".',
   },
   {
     id: '2',
@@ -53,14 +53,14 @@ const FEATURED_BOOKS_DATA = [
     publication: 'Weltevreden : Balai Poestaka, 1929',
     language: 'Indonesia',
     coverUrl: 'assets/moesoeh_dalam_selimoet.png',
-    description: 'Buku terjemahan novel "The Secret Adversary" (1922) yang diterbitkan dalam jilid I dan II.',
+    description: 'Ketika kapal Lusitania ditorpedo, seorang pria misterius menitipkan dokumen rahasia yang sangat penting bagi keselamatan Inggris kepada Jane Finn. Sayangnya, tak lama setelah itu Jane menghilang tanpa jejak. Lima tahun berlalu, perang telah usai, namun krisis baru justru muncul. Dokumen krusial tersebut kini menjadi incaran "Tuan Brown", dalang licik dari sebuah organisasi besar yang berniat memicu revolusi kaum ekstrem, pemogokan buruh, dan teror pemerintahan. Dalam situasi genting ini, dua petualang muda, Tommy dan Tuppence Beresford, tanpa sengaja terseret ke dalam pusaran intrik perburuan dokumen tersebut. Mereka harus berpacu dengan waktu untuk menemukan Jane Finn, mengamankan dokumennya, dan mengungkap kedok "Tuan Brown" yang selama ini memanipulasi keadaan dari balik layar.',
     subject: 'Novel Fiksi Indonesia',
   },
   {
     id: '3',
     title: 'Suluk Plencung',
     publication: 'Yogyakarta : Yopdyog, 2003',
-    subject: 'Kesusastraan Jawa, Mantra',
+    subject: 'Kesusastraan Jawa-- Tembang',
     coverUrl: 'assets/suluk_plencung.png',
     description: 'Teks terdiri dari Dasanama, Yudaganara, Ajisaka, Piwulang, Sastra Gendhing, Nitisastra, Ngelmu, Dongeng, Ki Kewala, Wulangreh, Seh Tekawerdi, Sayid Dullah, Resi Ciptadriya, dan Suluk Pamungkas.',
     language: 'Jawa',
@@ -123,7 +123,7 @@ export default function Dashboard() {
       </section>
 
       {/* Koleksi terbaru / unggulan */}
-      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 border-t border-navy-500/10 dark:border-gilt-400/10">
         <div className="mb-6 flex items-end justify-between">
           <h2 className="font-display text-xl font-semibold text-ink-900 dark:text-parchment-100">
             Koleksi Pilihan

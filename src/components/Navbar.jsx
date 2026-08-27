@@ -38,7 +38,7 @@ export default function Navbar() {
         
         {/* ===== KIRI: LOGO & JUDUL ===== */}
         <Link to="/dashboard" className="flex items-center gap-4 shrink-0">
-          <span className="flex h-12 w-12 items-center justify-center rounded-md bg-parchment-50 dark:bg-navy-400 overflow-hidden">
+          <span className="flex h-12 w-12 items-center justify-center rounded-md bg-parchment-50 dark:bg-navy-500/15 overflow-hidden">
             
             {/* Gambar Light Mode (muncul saat terang, sembunyi saat gelap) */}
             <img 
