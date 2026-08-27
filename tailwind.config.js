@@ -1,14 +1,10 @@
+/** @type {import('tailwindcss').Config} */
 export default {
   darkMode: 'class',
   content: ['./index.html', './src/**/*.{js,jsx}'],
   theme: {
     extend: {
       colors: {
-        // Warna semantik khusus untuk Card agar senada dengan footer
-        card: {
-          DEFAULT: '#EFF6FF', // Menggunakan warna setara navy-50 untuk light mode
-          dark: '#0F1626',    // Menggunakan warna obsidian.card untuk dark mode
-        },
         parchment: {
           50: '#FFFFFF',
           100: '#F4F7FB',
@@ -28,6 +24,17 @@ export default {
           600: '#22539C',
           700: '#1B3F78',
         },
+        // Alias — beberapa komponen memakai nama "heritage" untuk palet yang
+        // sama persis dengan "navy" di atas.
+        heritage: {
+          50: '#EFF6FF',
+          100: '#DCEBFA',
+          400: '#5E9FE0',
+          500: '#2F6FED',
+          600: '#22539C',
+          700: '#1B3F78',
+          800: '#152F5B',
+        },
         gilt: {
           300: '#D9B65B',
           400: '#C9A227',
@@ -37,6 +44,8 @@ export default {
           500: '#2F5D5A',
           600: '#234845',
         },
+        // Diambil dari warna kulit gajah pada ilustrasi referensi (#A8B8C0),
+        // dipakai sebagai warna latar kartu (card) saat mode terang.
         mist: {
           50: '#F2F4F6',
           100: '#E5EAEC',

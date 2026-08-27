@@ -37,30 +37,29 @@ export default function Navbar() {
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-5 lg:px-8">
         
         {/* ===== KIRI: LOGO & JUDUL ===== */}
-        <Link to="/" className="flex items-center gap-4 shrink-0">
-        <span className="flex h-12 w-12 items-center justify-center rounded-md bg-heritage-700 dark:bg-obsidian-card overflow-hidden">
-          
-          {/* Gambar Light Mode (muncul saat terang, sembunyi saat gelap) */}
-          <img 
-            src="assets/day.png" 
-            alt="Logo Karsa Siang" 
-            className="h-15 w-15 object-contain block dark:hidden" 
-          />
-          {/* Gambar Dark Mode (sembunyi saat terang, muncul saat gelap) */}
-          <img 
-            src="assets/night.png" 
-            alt="Logo Karsa Malam" 
-            className="h-15 w-15 object-contain hidden dark:block" 
-          />
-
-        </span>
+        <Link to="/dashboard" className="flex items-center gap-4 shrink-0">
+          <span className="flex h-12 w-12 items-center justify-center rounded-md bg-parchment-50 dark:bg-navy-400 overflow-hidden">
+            
+            {/* Gambar Light Mode (muncul saat terang, sembunyi saat gelap) */}
+            <img 
+              src="assets/day.png" 
+              alt="Logo Karsa Siang" 
+              className="h-15 w-15 object-contain block dark:hidden" 
+            />
+            {/* Gambar Dark Mode (sembunyi saat terang, muncul saat gelap) */}
+            <img 
+              src="assets/night.png" 
+              alt="Logo Karsa Malam" 
+              className="h-15 w-15 object-contain hidden dark:block" 
+            />
+          </span>
         
         <span className="leading-tight">
           <span className="block font-display text-2xl sm:text-3xl font-bold text-heritage-800 dark:text-heritage-50">
             Koleksi Ruang Langka
           </span>
           <span className="block text-[9px] uppercase tracking-[0.15em] text-ink-800/60 dark:text-parchment-100/60 sm:text-[10px]">
-            Balai Layanan Perpustakaan Pemda DIY
+            Balai Layanan Perpustakaan DPAD DIY
           </span>
         </span>
       </Link>
@@ -70,7 +69,7 @@ export default function Navbar() {
           
           {/* Menu Navigasi Desktop */}
           <nav className="hidden items-center gap-8 md:flex">
-            <NavLink to="/" end className={linkClass}>
+            <NavLink to="/dashboard" end className={linkClass}>
               Home
             </NavLink>
             <NavLink to="/katalog" className={linkClass}>
@@ -154,7 +153,7 @@ export default function Navbar() {
       {mobileOpen && (
         <div className="border-t border-navy-500/15 bg-parchment-50 px-4 py-3 md:hidden dark:border-gilt-400/10 dark:bg-ink-900">
           <div className="flex flex-col">
-            <NavLink to="/" end onClick={() => setMobileOpen(false)} className={linkClass}>
+            <NavLink to="/dashboard" end onClick={() => setMobileOpen(false)} className={linkClass}>
               Home
             </NavLink>
             <NavLink to="/katalog" onClick={() => setMobileOpen(false)} className={linkClass}>

@@ -89,7 +89,7 @@ export default function Dashboard() {
                 Menghidupkan Sejarah
               </h1>
               <p className="mt-4 max-w-xl text-ink-800/70 dark:text-parchment-100/70">
-                Jelajahi koleksi Ruang Langka Balai Layanan Perpustakaan Pemda DIY mulai dari manuskrip bersejarah hingga literatur berusia lebih dari 50 tahun.
+                Jelajahi koleksi Ruang Langka Balai Layanan Perpustakaan DPAD DIY mulai dari manuskrip bersejarah hingga literatur berusia lebih dari 50 tahun.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link

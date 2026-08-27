@@ -55,7 +55,7 @@ export default function Footer() {
             </h3>
             {/* Warna teks diubah menyerupai teks diagram (ink-900 / parchment-100) */}
             <p className="mt-3 text-sm leading-relaxed text-ink-900/80 dark:text-parchment-100/80">
-              Eksplorasi warisan literasi Nusantara. Dikelola resmi oleh Balai Layanan Perpustakaan (Grhatama Pustaka) Pemda DIY.
+              Eksplorasi warisan literasi Nusantara. Dikelola resmi oleh Balai Layanan Perpustakaan (Grhatama Pustaka) DPAD DIY.
             </p>
             <div className="mt-6 flex gap-3">
               {SOCIALS.map((s) => (
@@ -144,7 +144,7 @@ export default function Footer() {
 
       {/* ===== COPYRIGHT BAR ===== */}
       <div className="border-t border-navy-500/15 py-6 text-center text-xs text-ink-900/60 dark:border-gilt-400/15 dark:text-parchment-100/60">
-        © {new Date().getFullYear()} Balai Layanan Perpustakaan Pemda DIY — Koleksi Ruang Langka
+        © {new Date().getFullYear()} Balai Layanan Perpustakaan DPAD DIY — Koleksi Ruang Langka
       </div>
     </footer>
   )
