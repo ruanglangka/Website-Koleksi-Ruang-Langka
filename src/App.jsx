@@ -9,6 +9,7 @@ import Katalog from './pages/Katalog.jsx'
 import BookDetail from './pages/BookDetail.jsx'
 import PanduanFasilitas from './pages/panduan/Fasilitas.jsx'
 import PanduanKoleksi from './pages/panduan/Koleksi.jsx'
+import PanduanPerawatan from './pages/panduan/Perawatan.jsx'
 import PanduanLayanan from './pages/panduan/Layanan.jsx'
 import AdminLogin from './pages/admin/AdminLogin.jsx'
 import AdminPanel from './pages/admin/AdminPanel.jsx'
@@ -28,6 +29,7 @@ export default function App() {
           <Route path="/buku/:id" element={<BookDetail />} />
           <Route path="/panduan/fasilitas" element={<PanduanFasilitas />} />
           <Route path="/panduan/koleksi" element={<PanduanKoleksi />} />
+          <Route path="/panduan/perawatan" element={<PanduanPerawatan />} />
           <Route path="/panduan/layanan" element={<PanduanLayanan />} />
         </Route>
 
