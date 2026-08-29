@@ -1,9 +1,9 @@
 import React from 'react'
-import acPhoto from '../../public/assets/fasilitas/AC.png'
+import acPhoto from '../../public/assets/fasilitas/AC.jpeg'
 import wifiPhoto from '../../public/assets/fasilitas/wifi.jpg'
-import mejaBacaPhoto from '../../public/assets/fasilitas/mejaBaca.png'
-import lesehanPhoto from '../../public/assets/fasilitas/lesehan.png'
-import mejaLipatPhoto from '../../public/assets/fasilitas/mejaLipat.png'
+import mejaBacaPhoto from '../../public/assets/fasilitas/mejaBaca.jpeg'
+import lesehanPhoto from '../../public/assets/fasilitas/lesehan.jpeg'
+import mejaLipatPhoto from '../../public/assets/fasilitas/mejaLipat.jpeg'
 
 // Tiap fasilitas: nomor plat (gaya katalog arsip), nama, deskripsi singkat,
 // ikon garis, dan `image` (opsional). Kalau foto sudah ada, isi `image` dengan

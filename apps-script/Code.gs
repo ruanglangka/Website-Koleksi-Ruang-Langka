@@ -25,22 +25,28 @@
  * ============================================================================
  */
 
-const SHEET_NAME = 'Data Buku'; // ganti sesuai nama tab/sheet di spreadsheet-mu
+const SHEET_NAME = 'Sheet1'; // ganti sesuai nama tab/sheet di spreadsheet-mu
 const CACHE_SECONDS = 300; // cache 5 menit supaya respons lebih cepat & hemat kuota
 
 // Baris ke berapa header berada di spreadsheet kamu (bukan baris 1, tapi baris 2)
 const HEADER_ROW = 2;
 
 // Pemetaan: nama kolom ASLI di spreadsheet (huruf besar/kecil bebas)
-// -> nama internal yang dipakai kode di bawah
+// -> nama internal yang dipakai kode di bawah.
+// Sesuai kolom di spreadsheet "Katalog Baru Ruang Koleksi Langka":
+// NO | NOMOR PANGGIL | DATA BIBLIOGRAFIS | STATUS DI RAK | AKSARA | NOMOR INDUK
 const COLUMN_MAP = {
-  'no': 'no',                          // tidak dipakai, boleh diabaikan
+  'no': 'no',                          // nomor urut baris, tidak dipakai sebagai id
   'nomor panggil': 'lokasiRak',
   'data bibliografis': 'judul',
   'status di rak': 'kondisi',
-  'aksara': 'bahasa',
-  'nomor': 'id'
+  'aksara': 'aksara',
+  'nomor induk': 'nomorInduk'
 };
+
+// Field yang boleh dipakai untuk pencarian & sorting (harus salah satu nilai
+// di COLUMN_MAP di atas). Dipakai oleh handleList() di bawah.
+const SEARCHABLE_FIELDS = ['judul', 'lokasiRak', 'aksara', 'nomorInduk'];
 
 // ============================================================================
 // KONFIGURASI ADMIN
@@ -143,7 +149,7 @@ function handleList(params) {
   const rows = getAllRows();
 
   const search = String(params.search || '').toLowerCase().trim();
-  const kategori = String(params.kategori || '').trim();
+  const searchField = String(params.searchField || 'semua');
   const sortBy = String(params.sortBy || 'judul');
   const sortDir = String(params.sortDir || 'asc');
   const page = Math.max(1, parseInt(params.page, 10) || 1);
@@ -151,14 +157,18 @@ function handleList(params) {
 
   let filtered = rows;
   if (search) {
-    filtered = filtered.filter((r) => {
-      const judul = String(r.judul || '').toLowerCase();
-      const penulis = String(r.penulis || '').toLowerCase();
-      return judul.indexOf(search) !== -1 || penulis.indexOf(search) !== -1;
-    });
-  }
-  if (kategori) {
-    filtered = filtered.filter((r) => String(r.kategori || '') === kategori);
+    if (searchField !== 'semua' && SEARCHABLE_FIELDS.indexOf(searchField) !== -1) {
+      // Cari hanya di satu kolom yang dipilih user (Judul / Nomor Panggil / Aksara / Nomor Induk)
+      filtered = filtered.filter((r) => {
+        const value = String(r[searchField] || '').toLowerCase();
+        return value.indexOf(search) !== -1;
+      });
+    } else {
+      // 'semua': cari di seluruh kolom yang bisa dicari
+      filtered = filtered.filter((r) => {
+        return SEARCHABLE_FIELDS.some((f) => String(r[f] || '').toLowerCase().indexOf(search) !== -1);
+      });
+    }
   }
 
   filtered = filtered.slice().sort((a, b) => {

@@ -43,23 +43,27 @@ ruang-langka/
 
 ## 2. Langkah 1 — Pindahkan Data Excel ke Google Spreadsheet
 
-1. Buka [Google Sheets](https://sheets.google.com), buat spreadsheet baru.
+1. Buka [Google Sheets](https://sheets.google.com), buat spreadsheet baru
+   (atau pakai spreadsheet yang sudah ada, mis. `Katalog Baru Ruang Koleksi Langka`).
 2. Import file Excel: **File → Import → Upload**, pilih file `.xlsx` kamu,
    lalu pilih "Insert new sheet(s)" atau "Replace spreadsheet".
-3. Ganti nama tab/sheet menjadi **`Data Buku`** (atau sesuaikan `SHEET_NAME`
-   di `apps-script/Code.gs`).
-4. Pastikan **baris pertama (header)** berisi nama kolom berikut (urutan bebas,
-   tidak case-sensitive):
+3. Ganti nama tab/sheet menjadi **`Sheet1`** (atau sesuaikan `SHEET_NAME`
+   di `apps-script/Code.gs` supaya sama dengan nama tab kamu).
+4. Baris pertama (baris 1) boleh dikosongkan/untuk judul, baris **kedua (baris 2)**
+   harus berisi nama kolom berikut persis (urutan bebas, tidak case-sensitive):
 
-   | id | judul | penulis | kategori | tahun | bahasa | lokasiRak | kondisi | deskripsi | sampul |
-   |----|-------|---------|----------|-------|--------|-----------|---------|-----------|--------|
+   | NO | NOMOR PANGGIL | DATA BIBLIOGRAFIS | STATUS DI RAK | AKSARA | NOMOR INDUK |
+   |----|----------------|--------------------|-----------------|--------|--------------|
 
-   - `id` boleh dikosongkan (akan otomatis diisi nomor baris).
-   - `sampul` diisi URL gambar sampul buku (opsional, boleh dikosongkan).
-   - Kolom lain bebas ditambah — kolom tambahan tidak akan mengganggu, hanya
-     tidak ditampilkan kecuali kamu menambahkannya juga di `BookDetail.jsx`.
+   - `NO` cuma nomor urut, tidak dipakai sebagai id (id koleksi otomatis
+     diambil dari posisi barisnya).
+   - `DATA BIBLIOGRAFIS` dipakai sebagai judul koleksi.
+   - `STATUS DI RAK` menunjukkan kondisi/ketersediaan koleksi (mis. "Tersedia").
+   - Kolom lain bebas ditambah — tidak akan mengganggu, hanya tidak ditampilkan
+     kecuali kamu tambahkan juga pemetaannya di `COLUMN_MAP` (`apps-script/Code.gs`)
+     dan di `FIELD_LABELS` (`src/pages/BookDetail.jsx`).
 
-5. Baris 2 dan seterusnya diisi data ke-13.253 koleksi buku.
+5. Baris 3 dan seterusnya diisi data ke-13.253 koleksi buku.
 
 > 💡 Karena datanya besar (13rb+ baris), pastikan tidak ada baris kosong di
 > tengah data — baris kosong akan otomatis dilewati oleh API, tapi lebih rapi

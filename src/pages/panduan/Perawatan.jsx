@@ -1,6 +1,11 @@
 import React from 'react'
 import PanduanLayout, { Section } from './PanduanLayout.jsx'
 import PhotoPlaceholder from '../../components/PhotoPlaceholder.jsx'
+import alatPerawatan from '../../../public/assets/alatPerawatan.png'
+import kegiatan1 from '../../../public/assets/perawatan/perawatan1.png'
+import kegiatan2 from '../../../public/assets/perawatan/perawatan2.png'
+import kegiatan3 from '../../../public/assets/perawatan/perawatan3.png'
+import kegiatan4 from '../../../public/assets/perawatan/perawatan4.png'
 
 const ALAT = [
   'Dry gel / silica gel',
@@ -51,7 +56,7 @@ export default function Perawatan() {
 
       <Section title="Alat Perawatan">
         <div className="max-w-xs">
-          <PhotoPlaceholder aspect="aspect-[4/3]" label="Alat Perawatan" />
+          <PhotoPlaceholder aspect="aspect-[4/3]" label="Alat Perawatan" image={alatPerawatan} alt="Alat Perawatan" />
         </div>
         <div className="mt-3 flex flex-wrap gap-1.5">
           {ALAT.map((a) => (
@@ -67,10 +72,10 @@ export default function Perawatan() {
 
       <Section title="Kegiatan Perawatan">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          <PhotoPlaceholder aspect="aspect-[3/4]" />
-          <PhotoPlaceholder aspect="aspect-[3/4]" />
-          <PhotoPlaceholder aspect="aspect-[3/4]" />
-          <PhotoPlaceholder aspect="aspect-[3/4]" />
+          <PhotoPlaceholder aspect="aspect-[3/4]" image={kegiatan1} alt="Kegiatan Perawatan 1" />
+          <PhotoPlaceholder aspect="aspect-[3/4]" image={kegiatan2} alt="Kegiatan Perawatan 2" />
+          <PhotoPlaceholder aspect="aspect-[3/4]" image={kegiatan3} alt="Kegiatan Perawatan 3" />
+          <PhotoPlaceholder aspect="aspect-[3/4]" image={kegiatan4} alt="Kegiatan Perawatan 4" />
         </div>
       </Section>
     </PanduanLayout>
