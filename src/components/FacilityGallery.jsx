@@ -1,4 +1,9 @@
 import React from 'react'
+import acPhoto from '../../public/assets/fasilitas/AC.jpeg'
+import wifiPhoto from '../../public/assets/fasilitas/wifi.jpg'
+import mejaBacaPhoto from '../../public/assets/fasilitas/mejaBaca.jpeg'
+import lesehanPhoto from '../../public/assets/fasilitas/lesehan.jpeg'
+import mejaLipatPhoto from '../../public/assets/fasilitas/mejaLipat.jpeg'
 
 // Tiap fasilitas: nomor plat (gaya katalog arsip), nama, deskripsi singkat,
 // ikon garis, dan `image` (opsional). Kalau foto sudah ada, isi `image` dengan
@@ -10,7 +15,7 @@ const FACILITIES = [
     roman: 'I',
     name: 'Ruang Ber-AC',
     desc: 'Ruang baca bersuhu sejuk dan stabil, nyaman untuk kunjungan berjam-jam.',
-    image: null,
+    image: acPhoto,
     icon: (
       <>
         <path d="M12 2v20" />
@@ -23,7 +28,7 @@ const FACILITIES = [
     roman: 'II',
     name: 'Wifi',
     desc: 'Akses internet nirkabel gratis bagi pengunjung yang membutuhkan referensi digital.',
-    image: null,
+    image: wifiPhoto,
     icon: (
       <>
         <path d="M2.5 8.5a15 15 0 0 1 19 0" />
@@ -37,7 +42,7 @@ const FACILITIES = [
     roman: 'III',
     name: 'Meja Baca',
     desc: 'Meja individu dengan pencahayaan memadai untuk membaca dan mencatat.',
-    image: null,
+    image: mejaBacaPhoto,
     icon: (
       <>
         <path d="M12 6.2c-1.6-1.1-4.2-1.6-6.3-1.1v12.4c2.1-.5 4.7 0 6.3 1.1 1.6-1.1 4.2-1.6 6.3-1.1V5.1c-2.1-.5-4.7 0-6.3 1.1z" />
@@ -49,7 +54,7 @@ const FACILITIES = [
     roman: 'IV',
     name: 'Tempat Baca Lesehan',
     desc: 'Area baca lesehan bagi yang ingin membaca lebih santai dan leluasa.',
-    image: null,
+    image: lesehanPhoto,
     icon: (
       <>
         <rect x="4" y="10" width="16" height="7.5" rx="3" />
@@ -61,7 +66,7 @@ const FACILITIES = [
     roman: 'V',
     name: 'Meja Lipat',
     desc: 'Meja lipat tambahan yang dapat digunakan sesuai kebutuhan kunjungan.',
-    image: null,
+    image: mejaLipatPhoto,
     icon: (
       <>
         <path d="M3 9.5h18" />

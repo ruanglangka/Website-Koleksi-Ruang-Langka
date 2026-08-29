@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import BookCard from '../components/BookCard.jsx'
 import Pagination from '../components/Pagination.jsx'
 import { LoadingGrid, ErrorState, EmptyState } from '../components/StatusStates.jsx'
-import { fetchBooks, fetchCategories } from '../api/booksApi.js'
+import { fetchBooks } from '../api/booksApi.js'
 import { useDebounce } from '../hooks/useDebounce.js'
 
 const LIMIT = 20
@@ -11,20 +11,21 @@ const LIMIT = 20
 const SORT_OPTIONS = [
   { value: 'judul-asc', label: 'Judul (A–Z)' },
   { value: 'judul-desc', label: 'Judul (Z–A)' },
-  { value: 'tahun-asc', label: 'Tahun (Terlama)' },
-  { value: 'tahun-desc', label: 'Tahun (Terbaru)' },
+  { value: 'lokasiRak-asc', label: 'Nomor Panggil (Terawal)' },
+  { value: 'lokasiRak-desc', label: 'Nomor Panggil (Terakhir)' },
+  { value: 'aksara-asc', label: 'Aksara (A–Z)' },
+  { value: 'nomorInduk-asc', label: 'Nomor Induk (Terawal)' },
+  { value: 'nomorInduk-desc', label: 'Nomor Induk (Terakhir)' },
 ]
 
 // Pilihan field pencarian, ala OPAC iPusnas: user pilih dulu mau cari
 // berdasarkan apa, baru ketik kata kuncinya.
 const SEARCH_FIELD_OPTIONS = [
-  { value: 'semua', label: 'Sembarang' },
+  { value: 'semua', label: 'Semua Field' },
   { value: 'judul', label: 'Judul' },
-  { value: 'penulis', label: 'Pengarang' },
-  { value: 'kategori', label: 'Subyek/Kategori' },
-  { value: 'tahun', label: 'Tahun Terbit' },
   { value: 'lokasiRak', label: 'Nomor Panggil' },
-  { value: 'id', label: 'Item Id' },
+  { value: 'aksara', label: 'Aksara' },
+  { value: 'nomorInduk', label: 'Nomor Induk' },
 ]
 
 export default function Katalog() {
@@ -34,18 +35,12 @@ export default function Katalog() {
   const debouncedSearch = useDebounce(searchInput, 400)
   const searchField = searchParams.get('field') || 'semua'
 
-  const kategori = searchParams.get('kategori') || ''
   const sort = searchParams.get('sort') || 'judul-asc'
   const page = Number(searchParams.get('page') || 1)
   const [sortBy, sortDir] = sort.split('-')
 
-  const [categories, setCategories] = useState([])
   const [result, setResult] = useState({ items: [], total: 0, totalPages: 1 })
   const [status, setStatus] = useState('loading')
-
-  useEffect(() => {
-    fetchCategories().then(setCategories).catch(() => setCategories([]))
-  }, [])
 
   // sinkronkan input pencarian (debounced) ke URL, reset ke halaman 1
   useEffect(() => {
@@ -67,7 +62,6 @@ export default function Katalog() {
       limit: LIMIT,
       search: searchParams.get('q') || '',
       searchField,
-      kategori,
       sortBy,
       sortDir,
     })
@@ -80,7 +74,7 @@ export default function Katalog() {
     return () => {
       alive = false
     }
-  }, [page, searchParams, searchField, kategori, sortBy, sortDir])
+  }, [page, searchParams, searchField, sortBy, sortDir])
 
   function updateParam(key, value) {
     const next = new URLSearchParams(searchParams)
@@ -136,19 +130,6 @@ export default function Katalog() {
             ))}
           </select>
         </div>
-
-        <select
-          value={kategori}
-          onChange={(e) => updateParam('kategori', e.target.value)}
-          className="rounded-lg border border-navy-500/15 bg-parchment-50 px-3 py-2.5 text-sm text-ink-900 dark:border-gilt-400/15 dark:bg-ink-900 dark:text-parchment-100"
-        >
-          <option value="">Semua Kategori</option>
-          {categories.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
-          ))}
-        </select>
 
         <select
           value={sort}

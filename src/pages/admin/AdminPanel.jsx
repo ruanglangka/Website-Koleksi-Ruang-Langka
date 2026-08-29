@@ -159,8 +159,8 @@ export default function AdminPanel() {
                 <thead className="bg-navy-50 text-xs uppercase tracking-wide text-ink-800/60 dark:bg-obsidian-card dark:text-parchment-100/60">
                   <tr>
                     <th className="px-4 py-3">Judul</th>
-                    <th className="hidden px-4 py-3 sm:table-cell">Kategori</th>
-                    <th className="hidden px-4 py-3 md:table-cell">Tahun</th>
+                    <th className="hidden px-4 py-3 sm:table-cell">Nomor Panggil</th>
+                    <th className="hidden px-4 py-3 md:table-cell">Aksara</th>
                     <th className="px-4 py-3 text-right">Aksi</th>
                   </tr>
                 </thead>
@@ -206,11 +206,11 @@ export default function AdminPanel() {
                         <td className="px-4 py-3">
                           <p className="font-medium">{book.judul}</p>
                           <p className="text-xs text-ink-800/50 dark:text-parchment-100/50 sm:hidden">
-                            {book.kategori}
+                            {book.lokasiRak}
                           </p>
                         </td>
-                        <td className="hidden px-4 py-3 sm:table-cell">{book.kategori}</td>
-                        <td className="hidden px-4 py-3 md:table-cell">{book.tahun}</td>
+                        <td className="hidden px-4 py-3 sm:table-cell">{book.lokasiRak}</td>
+                        <td className="hidden px-4 py-3 md:table-cell">{book.aksara}</td>
                         <td className="px-4 py-3 text-right">
                           <div className="flex justify-end gap-2">
                             <button

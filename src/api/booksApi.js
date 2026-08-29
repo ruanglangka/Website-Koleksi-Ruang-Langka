@@ -45,7 +45,7 @@ async function callApi(params = {}) {
 }
 
 /**
- * Mengambil daftar buku dengan pagination, pencarian, filter kategori, dan sorting.
+ * Mengambil daftar buku dengan pagination, pencarian per-field, dan sorting.
  * Semua pemrosesan (filter/sort/pagination) dilakukan di sisi Apps Script
  * agar client tidak perlu mengunduh 13.000+ baris sekaligus.
  */
@@ -54,7 +54,6 @@ export async function fetchBooks({
   limit = 20,
   search = '',
   searchField = 'semua',
-  kategori = '',
   sortBy = 'judul',
   sortDir = 'asc',
 } = {}) {
@@ -64,7 +63,6 @@ export async function fetchBooks({
     limit,
     search,
     searchField,
-    kategori,
     sortBy,
     sortDir,
   })
@@ -80,12 +78,6 @@ export async function fetchBooks({
 export async function fetchBookById(id) {
   const data = await callApi({ action: 'detail', id })
   return data.item || null
-}
-
-/** Mengambil daftar kategori unik untuk dropdown filter. */
-export async function fetchCategories() {
-  const data = await callApi({ action: 'categories' })
-  return data.categories || []
 }
 
 /** Mengambil beberapa buku unggulan untuk ranking di dashboard. */

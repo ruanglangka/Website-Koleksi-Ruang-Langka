@@ -1,4 +1,16 @@
 import React from 'react'
+import manuskrip1Photo from '../../public/assets/koleksi/manuskrip1.png'
+import manuskrip2Photo from '../../public/assets/koleksi/manuskrip2.png'
+import inggrisCetakPhoto from '../../public/assets/koleksi/inggrisCetak.png'
+import arabPegon1Photo from '../../public/assets/koleksi/arabPegon1.png'
+import arabPegon2Photo from '../../public/assets/koleksi/arabPegon2.png'
+import belandaCetakPhoto from '../../public/assets/koleksi/belandaCetak.png'
+import jawaCetak1Photo from '../../public/assets/koleksi/jawaCetak1.png'
+import jawaCetak2Photo from '../../public/assets/koleksi/jawaCetak2.png'
+import jawaCetak3Photo from '../../public/assets/koleksi/jawaCetak3.png'
+import melayuCetakPhoto from '../../public/assets/koleksi/melayuCetak.png'
+import jawaReproduksi1Photo from '../../public/assets/koleksi/jawaReproduksi1.png'
+import jawaReproduksi2Photo from '../../public/assets/koleksi/jawaReproduksi2.png'
 
 // Sama seperti FacilityGallery: isi `image` dengan hasil import foto asli
 // (mis. import manuskrip1 from '../assets/koleksi/manuskrip-1.jpg') untuk
@@ -7,37 +19,62 @@ const EXAMPLES = [
   {
     category: 'Manuskrip',
     desc: 'Naskah tulisan tangan, salah satu bentuk koleksi langka tertua di Ruang Langka.',
-    image: null,
+    image: manuskrip1Photo,
   },
   {
-    category: 'Cetakan Inggris',
+    category: 'Manuskrip',
+    desc: 'Naskah tulisan tangan, salah satu bentuk koleksi langka tertua di Ruang Langka.',
+    image: manuskrip2Photo,
+  },
+  {
+    category: 'Inggris Cetak',
     desc: 'Buku cetak berbahasa Inggris dari masa penerbitan lawas.',
-    image: null,
+    image: inggrisCetakPhoto,
   },
   {
-    category: 'Cetakan Belanda',
+    category: 'Belanda Cetak',
     desc: 'Terbitan berbahasa Belanda, banyak berasal dari masa kolonial.',
-    image: null,
+    image: belandaCetakPhoto,
   },
   {
-    category: 'Cetakan Jawa',
+    category: 'Jawa Cetak',
     desc: 'Buku cetak beraksara atau berbahasa Jawa dari berbagai era penerbitan.',
-    image: null,
+    image: jawaCetak1Photo,
   },
   {
-    category: 'Cetakan Melayu',
+    category: 'Jawa Cetak',
+    desc: 'Buku cetak beraksara atau berbahasa Jawa dari berbagai era penerbitan.',
+    image: jawaCetak2Photo,
+  },
+  {
+    category: 'Jawa Cetak',
+    desc: 'Buku cetak beraksara atau berbahasa Jawa dari berbagai era penerbitan.',
+    image: jawaCetak3Photo,
+  },
+  {
+    category: 'Melayu Cetak',
     desc: 'Terbitan berbahasa Melayu yang kini sudah sulit ditemukan di pasaran.',
-    image: null,
+    image: melayuCetakPhoto,
   },
   {
-    category: 'Reproduksi Jawa',
+    category: 'Jawa Reproduksi',
     desc: 'Hasil alih media/reproduksi dari naskah atau cetakan Jawa asli.',
-    image: null,
+    image: jawaReproduksi1Photo,
+  },
+  {
+    category: 'Jawa Reproduksi',
+    desc: 'Hasil alih media/reproduksi dari naskah atau cetakan Jawa asli.',
+    image: jawaReproduksi2Photo,
   },
   {
     category: 'Arab Pegon',
     desc: 'Naskah berbahasa Jawa/Melayu yang ditulis dengan aksara Arab Pegon.',
-    image: null,
+    image: arabPegon1Photo,
+  },
+  {
+    category: 'Arab Pegon',
+    desc: 'Naskah berbahasa Jawa/Melayu yang ditulis dengan aksara Arab Pegon.',
+    image: arabPegon2Photo,
   },
 ]
 
