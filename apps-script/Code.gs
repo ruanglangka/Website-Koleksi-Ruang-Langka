@@ -7,19 +7,21 @@
  *
  * CARA PAKAI:
  * 1. Buka Google Spreadsheet yang berisi data buku (13.253 baris).
- * 2. Pastikan letak baris header sesuai dengan HEADER_ROW di bawah.
+ * 2. Pastikan letak baris header sesuai dengan HEADER_ROW di bawah (di
+ *    spreadsheet-mu, baris 1 kosong dan header ada di baris 2).
  * 3. Buka menu Extensions > Apps Script pada spreadsheet tersebut.
  * 4. Hapus isi default, lalu tempel seluruh isi file ini.
- * 5. Klik Deploy > New deployment.
+ * 5. Klik Deploy > New deployment (atau edit deployment yang sudah ada > New version).
  *      - Pilih tipe: "Web app"
  *      - Execute as: Me
  *      - Who has access: Anyone
- * 6. Salin URL Web App yang muncul (contoh: https://script.google.com/macros/s/AKfycb.../exec)
+ * 6. Salin URL Web App yang berakhiran /exec (BUKAN /dev — /dev tidak mendukung CORS).
  * 7. Tempelkan URL tersebut sebagai VITE_API_URL pada file .env di project React.
  *
  * CATATAN PENTING:
  * - Setiap kali admin mengubah/menambah baris di Spreadsheet, API ini otomatis
- *   membaca data terbaru — TIDAK PERLU deploy ulang.
+ *   membaca data terbaru — TIDAK PERLU deploy ulang (hanya menunggu cache
+ *   maksimal 5 menit, lihat CACHE_SECONDS).
  * - Deploy ulang HANYA diperlukan jika kamu mengubah ISI SCRIPT ini sendiri.
  * - Nama SHEET yang dibaca diatur di SHEET_NAME di bawah — sesuaikan bila perlu.
  * ============================================================================
@@ -35,18 +37,19 @@ const HEADER_ROW = 2;
 // -> nama internal yang dipakai kode di bawah.
 // Sesuai kolom di spreadsheet "Katalog Baru Ruang Koleksi Langka":
 // NO | NOMOR PANGGIL | DATA BIBLIOGRAFIS | STATUS DI RAK | AKSARA | NOMOR
+//
+// PENTING: key di kiri harus SAMA PERSIS (setelah di-trim & lowercase) dengan
+// teks header asli di baris HEADER_ROW pada spreadsheet. Kalau tidak match
+// persis, kolom itu TIDAK ter-mapping (gagal diam-diam) dan field-nya jadi
+// kosong di hasil API.
 const COLUMN_MAP = {
   'no': 'no',                          // nomor urut baris, tidak dipakai sebagai id
   'nomor panggil': 'lokasiRak',
   'data bibliografis': 'judul',
   'status di rak': 'kondisi',
   'aksara': 'aksara',
-  'nomor': 'nomorInduk'
+  'nomor induk': 'nomorInduk'          // dikonfirmasi lewat action=debug: header aslinya "NOMOR INDUK"
 };
-
-// Field yang boleh dipakai untuk pencarian & sorting (harus salah satu nilai
-// di COLUMN_MAP di atas). Dipakai oleh handleList() di bawah.
-const SEARCHABLE_FIELDS = ['judul', 'lokasiRak', 'aksara', 'nomorInduk'];
 
 // ============================================================================
 // KONFIGURASI ADMIN
@@ -75,6 +78,9 @@ function doGet(e) {
       case 'featured':
         result = handleFeatured();
         break;
+      case 'debug':
+        result = handleDebug();
+        break;
       default:
         result = { error: 'Aksi tidak dikenali: ' + action };
     }
@@ -89,6 +95,37 @@ function jsonOutput(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(
     ContentService.MimeType.JSON
   );
+}
+
+/**
+ * Aksi debug sementara — buka /exec?action=debug di browser untuk lihat
+ * bagaimana script ini benar-benar membaca spreadsheet-mu (nama file, nama
+ * sheet, jumlah baris, dan hasil pemetaan header). Berguna kalau total selalu
+ * 0 padahal data sudah ada. Boleh dihapus kalau sudah tidak dibutuhkan.
+ */
+function handleDebug() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName(SHEET_NAME);
+  if (!sheet) return { error: 'Sheet tidak ditemukan', spreadsheetName: ss.getName() };
+
+  const lastRow = sheet.getLastRow();
+  const lastCol = sheet.getLastColumn();
+  const rawHeaders = sheet.getRange(HEADER_ROW, 1, 1, lastCol).getValues()[0]
+    .map((h) => String(h).trim().toLowerCase());
+  const mappedHeaders = rawHeaders.map((h) => COLUMN_MAP[h] || h);
+  const sampleRow = lastRow > HEADER_ROW
+    ? sheet.getRange(HEADER_ROW + 1, 1, 1, lastCol).getValues()[0]
+    : [];
+
+  return {
+    spreadsheetName: ss.getName(),
+    sheetName: sheet.getName(),
+    lastRow,
+    lastCol,
+    rawHeaders,
+    mappedHeaders,
+    sampleRow,
+  };
 }
 
 /** Mengambil seluruh data dari sheet, dengan cache singkat agar hemat kuota. */
@@ -107,7 +144,7 @@ function getAllRows() {
   const values = sheet.getDataRange().getValues();
   if (values.length < HEADER_ROW + 1) return [];
 
-  // Ambil header dari HEADER_ROW, lalu terjemahkan lewat COLUMN_MAP
+  // Ambil header dari HEADER_ROW (bukan selalu baris 1), lalu terjemahkan lewat COLUMN_MAP
   const rawHeaders = values[HEADER_ROW - 1].map((h) => String(h).trim().toLowerCase());
   const headers = rawHeaders.map((h) => COLUMN_MAP[h] || h);
 
@@ -116,11 +153,17 @@ function getAllRows() {
     const row = values[i];
     const obj = {};
     headers.forEach((h, idx) => {
-      obj[h] = row[idx] !== undefined && row[idx] !== null ? row[idx] : '';
+      let val = row[idx] !== undefined && row[idx] !== null ? row[idx] : '';
+      // Buang newline/spasi tersembunyi di awal-akhir teks (mis. dari Alt+Enter
+      // di sel spreadsheet, atau indentasi manual). Kalau tidak dibuang, sorting
+      // jadi rusak karena karakter newline/spasi punya nilai lebih kecil dari
+      // huruf, jadi selalu "menang" duluan meski tidak kelihatan di tampilan.
+      if (typeof val === 'string') val = val.trim().replace(/\s+/g, ' ');
+      obj[h] = val;
     });
     if (!obj.judul) continue;
 
-    if (!obj.id) obj.id = String(i);
+    if (!obj.id) obj.id = String(i); // fallback id = nomor baris data
     obj.id = String(obj.id);
     if (obj.tahun instanceof Date) {
       obj.tahun = obj.tahun.getFullYear();
@@ -128,9 +171,11 @@ function getAllRows() {
     rows.push(obj);
   }
 
+  // Simpan ke cache. Batas ukuran cache Apps Script adalah 100KB per key,
+  // jadi untuk dataset besar kita pecah per potongan (chunk).
   try {
     const json = JSON.stringify(rows);
-    const chunkSize = 90000;
+    const chunkSize = 90000; // karakter, aman di bawah batas 100KB
     const chunks = [];
     for (let i = 0; i < json.length; i += chunkSize) {
       chunks.push(json.slice(i, i + chunkSize));
@@ -140,16 +185,38 @@ function getAllRows() {
     if (chunks.length === 1) {
       cache.put('rl_all_rows', json, CACHE_SECONDS);
     }
-  } catch (e) {}
+  } catch (e) {
+    // Jika gagal cache (dataset sangat besar), lanjut tanpa cache.
+  }
 
   return rows;
+}
+
+/**
+ * Sebagian judul di spreadsheet ternyata memakai huruf YUNANI yang mirip
+ * huruf Latin (mis. "Κ" Kappa Yunani, bukan "K" Latin biasa) — kemungkinan
+ * sisa dari copy-paste dokumen lama. Secara visual identik, tapi secara
+ * Unicode beda kode, sehingga sorting jadi kacau (huruf Yunani dikelompokkan
+ * terpisah dari huruf Latin). Fungsi ini menerjemahkan huruf Yunani yang
+ * mirip itu ke Latin HANYA untuk keperluan perbandingan/sorting — teks judul
+ * asli yang ditampilkan ke user tidak diubah sama sekali.
+ */
+function normalizeForSort(str) {
+  const GREEK_TO_LATIN = {
+    'Α': 'A', 'Β': 'B', 'Ε': 'E', 'Ζ': 'Z', 'Η': 'H', 'Ι': 'I', 'Κ': 'K',
+    'Μ': 'M', 'Ν': 'N', 'Ο': 'O', 'Ρ': 'P', 'Τ': 'T', 'Υ': 'Y', 'Χ': 'X',
+    'α': 'a', 'β': 'b', 'ε': 'e', 'ζ': 'z', 'η': 'h', 'ι': 'i', 'κ': 'k',
+    'μ': 'm', 'ν': 'n', 'ο': 'o', 'ρ': 'p', 'τ': 't', 'υ': 'y', 'χ': 'x',
+  };
+  return String(str).replace(/[ΑΒΕΖΗΙΚΜΝΟΡΤΥΧαβεζηικμνορτυχ]/g, (ch) => GREEK_TO_LATIN[ch] || ch);
 }
 
 function handleList(params) {
   const rows = getAllRows();
 
   const search = String(params.search || '').toLowerCase().trim();
-  const searchField = String(params.searchField || 'semua');
+  const searchField = String(params.searchField || 'semua').trim();
+  const kategori = String(params.kategori || '').trim();
   const sortBy = String(params.sortBy || 'judul');
   const sortDir = String(params.sortDir || 'asc');
   const page = Math.max(1, parseInt(params.page, 10) || 1);
@@ -157,18 +224,21 @@ function handleList(params) {
 
   let filtered = rows;
   if (search) {
-    if (searchField !== 'semua' && SEARCHABLE_FIELDS.indexOf(searchField) !== -1) {
-      // Cari hanya di satu kolom yang dipilih user (Judul / Nomor Panggil / Aksara / Nomor Induk)
-      filtered = filtered.filter((r) => {
-        const value = String(r[searchField] || '').toLowerCase();
-        return value.indexOf(search) !== -1;
+    filtered = filtered.filter((r) => {
+      if (searchField && searchField !== 'semua') {
+        // Cari cuma di 1 field tertentu (mis. hanya "lokasiRak" atau "aksara")
+        const val = String(r[searchField] !== undefined ? r[searchField] : '').toLowerCase();
+        return val.indexOf(search) !== -1;
+      }
+      // "Semua Field": cari di semua kolom teks sekaligus
+      return Object.keys(r).some((key) => {
+        const val = String(r[key] !== undefined ? r[key] : '').toLowerCase();
+        return val.indexOf(search) !== -1;
       });
-    } else {
-      // 'semua': cari di seluruh kolom yang bisa dicari
-      filtered = filtered.filter((r) => {
-        return SEARCHABLE_FIELDS.some((f) => String(r[f] || '').toLowerCase().indexOf(search) !== -1);
-      });
-    }
+    });
+  }
+  if (kategori) {
+    filtered = filtered.filter((r) => String(r.kategori || '') === kategori);
   }
 
   filtered = filtered.slice().sort((a, b) => {
@@ -178,7 +248,7 @@ function handleList(params) {
     if (typeof av === 'number' && typeof bv === 'number') {
       cmp = av - bv;
     } else {
-      cmp = String(av).localeCompare(String(bv), 'id', { numeric: true });
+      cmp = normalizeForSort(String(av)).localeCompare(normalizeForSort(String(bv)), 'id', { numeric: true });
     }
     return sortDir === 'desc' ? -cmp : cmp;
   });
@@ -188,7 +258,17 @@ function handleList(params) {
   const start = (page - 1) * limit;
   const items = filtered.slice(start, start + limit);
 
-  return { items, total, page, totalPages };
+  return {
+    items,
+    total,
+    page,
+    totalPages,
+    // --- DEBUG SEMENTARA, hapus setelah sorting terbukti benar ---
+    _debugSortBy: sortBy,
+    _debugSortDir: sortDir,
+    _debugFirstJudul: items.length ? items[0].judul : null,
+    _debugLastJudul: items.length ? items[items.length - 1].judul : null,
+  };
 }
 
 function handleDetail(params) {
@@ -215,6 +295,17 @@ function handleFeatured() {
 /**
  * ============================================================================
  * BAGIAN ADMIN — aksi TULIS (tambah/ubah/hapus koleksi)
+ * ============================================================================
+ * Semua request tulis masuk lewat doPost(e), dikirim sebagai JSON di dalam
+ * e.postData.contents (bukan lewat parameter URL seperti doGet), dan WAJIB
+ * menyertakan idToken Google yang diverifikasi ulang di sini sebelum
+ * Spreadsheet disentuh sama sekali.
+ *
+ * Catatan CORS: Apps Script Web App otomatis mengizinkan cross-origin untuk
+ * "simple request" (Content-Type text/plain, tanpa header custom). Karena itu
+ * front-end mengirim POST dengan Content-Type text/plain lalu isi body-nya
+ * di-parse manual sebagai JSON di bawah ini — supaya tidak kena preflight
+ * OPTIONS yang tidak ditangani Apps Script.
  * ============================================================================
  */
 
@@ -258,6 +349,11 @@ function getScriptProp(key) {
   return PropertiesService.getScriptProperties().getProperty(key) || '';
 }
 
+/**
+ * Memverifikasi idToken Google ke server Google sendiri (bukan cuma dibaca
+ * mentah-mentah) — memastikan token itu asli dan belum kedaluwarsa, serta
+ * memang diterbitkan untuk aplikasi kita (cocok dengan GOOGLE_CLIENT_ID).
+ */
 function verifyGoogleIdToken(idToken) {
   if (!idToken) return null;
   const res = UrlFetchApp.fetch(
@@ -268,7 +364,7 @@ function verifyGoogleIdToken(idToken) {
   const data = JSON.parse(res.getContentText());
   const clientId = getScriptProp('GOOGLE_CLIENT_ID');
   if (clientId && data.aud !== clientId) return null;
-  return data;
+  return data; // berisi email, name, picture, exp, dll — sudah diverifikasi asli oleh Google
 }
 
 function isEmailWhitelisted(email) {
@@ -279,6 +375,7 @@ function isEmailWhitelisted(email) {
   return list.indexOf(String(email).toLowerCase()) !== -1;
 }
 
+/** Melempar error kalau token tidak valid ATAU emailnya tidak ada di whitelist. */
 function requireAdmin(idToken) {
   const claims = verifyGoogleIdToken(idToken);
   if (!claims || !claims.email) {
@@ -296,8 +393,8 @@ function getSheet() {
   return sheet;
 }
 
+/** Sesuaikan pembacaan header agar mengambil dari HEADER_ROW, lalu dipetakan lewat COLUMN_MAP. */
 function getHeaders(sheet) {
-  // Sesuaikan pembacaan header agar mengambil dari HEADER_ROW (baris 2) lalu dipetakan
   const rawHeaders = sheet
     .getRange(HEADER_ROW, 1, 1, sheet.getLastColumn())
     .getValues()[0]
@@ -305,6 +402,7 @@ function getHeaders(sheet) {
   return rawHeaders.map(function (h) { return COLUMN_MAP[h] || h; });
 }
 
+/** Hapus cache supaya perubahan langsung terlihat di request GET berikutnya. */
 function invalidateCache() {
   const cache = CacheService.getScriptCache();
   cache.remove('rl_all_rows');
@@ -321,6 +419,8 @@ function handleCreate(book) {
   const sheet = getSheet();
   const headers = getHeaders(sheet);
   const hasIdCol = headers.indexOf('id') !== -1;
+  // ID baru dibuat dari timestamp supaya selalu unik dan stabil walau ada
+  // baris lain yang dihapus/ditambah setelahnya.
   const newId = String(Date.now());
 
   const row = headers.map(function (h) {
@@ -332,18 +432,23 @@ function handleCreate(book) {
   return { item: Object.assign({ id: hasIdCol ? newId : newId }, book) };
 }
 
+/**
+ * Mencari nomor baris di sheet berdasarkan id. Kalau kolom "id" ada di
+ * header, dicocokkan langsung. Kalau tidak ada / kosong, fallback ke asumsi
+ * id = nomor urut baris data setelah HEADER_ROW.
+ */
 function findRowById(sheet, headers, id) {
   const idCol = headers.indexOf('id');
   const lastRow = sheet.getLastRow();
   const startRow = HEADER_ROW + 1; // Data dimulai setelah HEADER_ROW
-  
+
   if (idCol !== -1 && lastRow >= startRow) {
     const ids = sheet.getRange(startRow, idCol + 1, lastRow - startRow + 1, 1).getValues();
     for (let i = 0; i < ids.length; i++) {
       if (ids[i][0] !== '' && String(ids[i][0]) === String(id)) return i + startRow;
     }
   }
-  
+  // fallback posisional
   const rowNum = parseInt(id, 10) + 1;
   return rowNum >= startRow && rowNum <= lastRow ? rowNum : -1;
 }
