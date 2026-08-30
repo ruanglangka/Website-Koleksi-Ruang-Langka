@@ -39,16 +39,15 @@ export default function Navbar() {
         {/* ===== KIRI: LOGO & JUDUL ===== */}
         <Link to="/dashboard" className="flex items-center gap-4 shrink-0">
           <span className="flex h-12 w-12 items-center justify-center rounded-md bg-parchment-50 dark:bg-navy-500/15 overflow-hidden">
-            
-            {/* Gambar Light Mode (muncul saat terang, sembunyi saat gelap) */}
+            {/* Gambar Light Mode */}
             <img 
-              src="assets/day.png" 
+              src="public/icons/day.png" 
               alt="Logo Karsa Siang" 
               className="h-15 w-15 object-contain block dark:hidden" 
             />
-            {/* Gambar Dark Mode (sembunyi saat terang, muncul saat gelap) */}
+            {/* Gambar Dark Mode */}
             <img 
-              src="assets/night.png" 
+              src="public/icons/night.png" 
               alt="Logo Karsa Malam" 
               className="h-15 w-15 object-contain hidden dark:block" 
             />
@@ -64,7 +63,7 @@ export default function Navbar() {
         </span>
       </Link>
 
-        {/* ===== KANAN: MENU & TOMBOL (DIBUNGKUS DALAM SATU DIV) ===== */}
+        {/* ===== KANAN: MENU & TOMBOL ===== */}
         <div className="flex items-center gap-4 lg:gap-8 ml-auto">
           
           {/* Menu Navigasi Desktop */}
@@ -81,7 +80,6 @@ export default function Navbar() {
                 onClick={() => setDropdownOpen((v) => !v)}
                 aria-expanded={dropdownOpen}
                 aria-haspopup="true"
-                // Mengubah gap-1 menjadi gap-2 agar panah 'v' berjarak dari teks
                 className="flex items-center gap-2 px-3 py-2 text-sm font-medium tracking-wide text-ink-800/80 transition-colors hover:text-navy-500 dark:text-parchment-100/80 dark:hover:text-gilt-300"
               >
                 Panduan
@@ -146,6 +144,28 @@ export default function Navbar() {
             </button>
           </div>
 
+          {/* Tombol Logout */}
+          <Link
+            to="/" 
+            className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-ink-600 transition-colors hover:bg-navy-500/10 hover:text-ink-900 dark:text-parchment-300 dark:hover:bg-gilt-400/10 dark:hover:text-parchment-100"
+            title="Keluar"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+          </Link>
         </div>
       </div>
 

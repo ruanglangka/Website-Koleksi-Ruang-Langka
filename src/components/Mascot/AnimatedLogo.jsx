@@ -7,7 +7,7 @@ function resolveSrc(path) {
 export default function AnimatedLogo({ className = '', alt = 'Logo Ruang Langka', onError }) {
   return (
     <img
-      src={resolveSrc('assets/wave.png')}
+      src={resolveSrc('mascot/wave.png')}
       alt={alt}
       onError={onError}
       className={`wave-loop object-contain ${className}`}

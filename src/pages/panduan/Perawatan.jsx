@@ -1,11 +1,11 @@
 import React from 'react'
 import PanduanLayout, { Section } from './PanduanLayout.jsx'
 import PhotoPlaceholder from '../../components/PhotoPlaceholder.jsx'
-import alatPerawatan from '../../../public/assets/alatPerawatan.png'
-import kegiatan1 from '../../../public/assets/perawatan/perawatan1.png'
-import kegiatan2 from '../../../public/assets/perawatan/perawatan2.png'
-import kegiatan3 from '../../../public/assets/perawatan/perawatan3.png'
-import kegiatan4 from '../../../public/assets/perawatan/perawatan4.png'
+import alatPerawatan from '../../assets/alatPerawatan.png'
+import kegiatan1 from '../../assets/perawatan/perawatan1.png'
+import kegiatan2 from '../../assets/perawatan/perawatan2.png'
+import kegiatan3 from '../../assets/perawatan/perawatan3.png'
+import kegiatan4 from '../../assets/perawatan/perawatan4.png'
 
 const ALAT = [
   'Dry gel / silica gel',
@@ -19,7 +19,7 @@ export default function Perawatan() {
   return (
     <PanduanLayout eyebrow="Panduan Pengunjung" title="Perawatan Koleksi Langka">
       <Section title="Mengapa Koleksi Langka Perlu Dirawat">
-        <p>
+        <p className="text-justify mb-4">
           Dikarenakan koleksi langka kebanyakan adalah koleksi yang memiliki usia lebih dari 50
           tahun dan juga status kelangkaan koleksi menjadi perhatian yang utama, koleksi langka
           memerlukan perawatan tersendiri, yaitu perawatan harian dan perawatan periodik.

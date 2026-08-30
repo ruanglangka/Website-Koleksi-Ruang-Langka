@@ -59,13 +59,13 @@ export default function Koleksi() {
   return (
     <PanduanLayout eyebrow="Panduan Pengunjung" title="Koleksi Buku Langka">
       <Section title="Apa itu Buku Langka?">
-        <p>
+        <p className="text-justify mb-4">
           Buku langka, atau sering disebut juga buku antik, adalah jenis buku yang sudah tidak
           dicetak lagi, jarang ditemukan di toko buku, dan biasanya memuat informasi bersejarah
           yang penting (Badan Perpustakaan dan Arsip Daerah Provinsi DIY, 2009, dalam Pratiwi,
           2017). Karena keunikannya, buku-buku ini masuk dalam kategori koleksi khusus.
         </p>
-        <p>
+        <p className="text-justify mb-4">
           Karena nilainya yang tinggi dan isinya yang istimewa, koleksi seperti ini biasanya
           disimpan di tempat khusus yang aman, dengan pengaturan suhu dan kelembapan tertentu,
           serta aturan peminjaman atau akses yang berbeda dari buku-buku biasa (Kilmarx, 2020).

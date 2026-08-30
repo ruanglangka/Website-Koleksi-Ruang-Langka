@@ -34,14 +34,14 @@ const HEADER_ROW = 2;
 // Pemetaan: nama kolom ASLI di spreadsheet (huruf besar/kecil bebas)
 // -> nama internal yang dipakai kode di bawah.
 // Sesuai kolom di spreadsheet "Katalog Baru Ruang Koleksi Langka":
-// NO | NOMOR PANGGIL | DATA BIBLIOGRAFIS | STATUS DI RAK | AKSARA | NOMOR INDUK
+// NO | NOMOR PANGGIL | DATA BIBLIOGRAFIS | STATUS DI RAK | AKSARA | NOMOR
 const COLUMN_MAP = {
   'no': 'no',                          // nomor urut baris, tidak dipakai sebagai id
   'nomor panggil': 'lokasiRak',
   'data bibliografis': 'judul',
   'status di rak': 'kondisi',
   'aksara': 'aksara',
-  'nomor induk': 'nomorInduk'
+  'nomor': 'nomorInduk'
 };
 
 // Field yang boleh dipakai untuk pencarian & sorting (harus salah satu nilai

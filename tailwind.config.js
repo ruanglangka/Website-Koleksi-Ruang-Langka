@@ -44,8 +44,6 @@ export default {
           500: '#2F5D5A',
           600: '#234845',
         },
-        // Diambil dari warna kulit gajah pada ilustrasi referensi (#A8B8C0),
-        // dipakai sebagai warna latar kartu (card) saat mode terang.
         mist: {
           50: '#F2F4F6',
           100: '#E5EAEC',
