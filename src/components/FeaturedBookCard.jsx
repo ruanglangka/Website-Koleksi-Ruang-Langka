@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function FeaturedBookCard({ book }) {
   return (
-    <div className="group relative flex gap-4 overflow-hidden rounded-xl border border-navy-500/10 bg-navy-50 p-4 shadow-card transition-all hover:-translate-y-1 hover:border-navy-500/25 hover:shadow-book dark:border-obsidian-border dark:bg-obsidian-card dark:shadow-card-dark dark:hover:border-gilt-400/30 sm:gap-6 sm:p-5">
+    <div className="group relative flex flex-col gap-4 overflow-hidden rounded-xl border border-navy-500/10 bg-navy-50 p-4 shadow-card transition-all hover:-translate-y-1 hover:border-navy-500/25 hover:shadow-book dark:border-obsidian-border dark:bg-obsidian-card dark:shadow-card-dark dark:hover:border-gilt-400/30 sm:flex-row sm:items-start sm:gap-6 sm:p-5">
 
       {/* Garis gradasi emas di atas, sama seperti kartu panduan */}
       <span
@@ -10,8 +10,11 @@ export default function FeaturedBookCard({ book }) {
         aria-hidden="true"
       />
 
-      {/* Cover di kiri */}
-      <div className="aspect-[3/4] w-24 shrink-0 overflow-hidden rounded-lg shadow-md sm:w-32">
+      {/* Cover: di HP kecil tampil di atas (lebar terbatas, rata tengah),
+          mulai sm: ke atas pindah ke kiri berdampingan dengan teks.
+          items-start di parent mencegah gambar ikut "meregang" setinggi
+          paragraf deskripsi di sebelahnya. */}
+      <div className="aspect-[3/4] w-24 shrink-0 self-center overflow-hidden rounded-lg shadow-md sm:w-32 sm:self-start">
         {book.coverUrl ? (
           <img
             src={book.coverUrl}
@@ -27,7 +30,7 @@ export default function FeaturedBookCard({ book }) {
         )}
       </div>
 
-      {/* Judul, info penerbitan, deskripsi di kanan */}
+      {/* Judul, info penerbitan, deskripsi */}
       <div className="min-w-0 flex-1">
         <span className="inline-block rounded-full bg-gilt-400/15 px-2 py-0.5 text-[11px] font-medium text-gilt-500 dark:text-gilt-300">
           {book.subject}
@@ -38,7 +41,7 @@ export default function FeaturedBookCard({ book }) {
         </h3>
 
         {book.description && (
-          <p className="mt-2 text-sm leading-relaxed text-ink-800/70 dark:text-parchment-100/70">
+          <p className="mt-2 text-justify text-sm leading-relaxed text-ink-800/70 dark:text-parchment-100/70">
             {book.description}
           </p>
         )}

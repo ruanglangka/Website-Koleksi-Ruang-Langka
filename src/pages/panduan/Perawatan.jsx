@@ -27,9 +27,16 @@ export default function Perawatan() {
       </Section>
 
       <Section title="Jenis Perawatan">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div className="rounded-lg border border-navy-500/15 bg-parchment-50 p-4 dark:border-gilt-400/15 dark:bg-ink-800">
-            <p className="font-display text-sm font-semibold text-ink-900 dark:text-parchment-100">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <div className="group relative overflow-hidden rounded-xl border border-navy-500/10 bg-navy-50 p-5 shadow-card transition-all hover:-translate-y-1 hover:border-navy-500/25 hover:shadow-book dark:border-obsidian-border dark:bg-obsidian-card dark:shadow-card-dark dark:hover:border-gilt-400/30">
+            <span
+              className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-navy-500 via-gilt-400 to-navy-500 dark:from-gilt-500 dark:via-gilt-300 dark:to-gilt-500"
+              aria-hidden="true"
+            />
+            <span className="inline-block rounded-full bg-gilt-400/15 px-2.5 py-0.5 text-[11px] font-medium uppercase tracking-[0.1em] text-gilt-500 dark:text-gilt-300">
+              Setiap Hari
+            </span>
+            <p className="mt-1.5 font-display text-base font-semibold text-ink-900 dark:text-parchment-100">
               Perawatan Harian
             </p>
             <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-ink-800/80 dark:text-parchment-100/80">
@@ -39,12 +46,16 @@ export default function Perawatan() {
             </ul>
           </div>
 
-          <div className="rounded-lg border border-navy-500/15 bg-parchment-50 p-4 dark:border-gilt-400/15 dark:bg-ink-800">
-            <p className="font-display text-sm font-semibold text-ink-900 dark:text-parchment-100">
-              Perawatan Periodik{' '}
-              <span className="font-body text-xs font-normal text-ink-800/50 dark:text-parchment-100/50">
-                (6 bulan sekali)
-              </span>
+          <div className="group relative overflow-hidden rounded-xl border border-navy-500/10 bg-navy-50 p-5 shadow-card transition-all hover:-translate-y-1 hover:border-navy-500/25 hover:shadow-book dark:border-obsidian-border dark:bg-obsidian-card dark:shadow-card-dark dark:hover:border-gilt-400/30">
+            <span
+              className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-navy-500 via-gilt-400 to-navy-500 dark:from-gilt-500 dark:via-gilt-300 dark:to-gilt-500"
+              aria-hidden="true"
+            />
+            <span className="inline-block rounded-full bg-gilt-400/15 px-2.5 py-0.5 text-[11px] font-medium uppercase tracking-[0.1em] text-gilt-500 dark:text-gilt-300">
+              6 Bulan Sekali
+            </span>
+            <p className="mt-1.5 font-display text-base font-semibold text-ink-900 dark:text-parchment-100">
+              Perawatan Periodik
             </p>
             <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-ink-800/80 dark:text-parchment-100/80">
               <li>Fumigasi koleksi untuk mencegah serangan serangga dan jamur.</li>

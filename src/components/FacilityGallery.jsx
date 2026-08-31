@@ -99,15 +99,25 @@ export default function FacilityGallery() {
   return (
     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {FACILITIES.map((f) => (
-        <figure
+        <div
           key={f.roman}
-          className="group overflow-hidden rounded-lg border border-navy-500/15 bg-parchment-50 shadow-sm transition-shadow hover:shadow-book dark:border-gilt-400/15 dark:bg-ink-800"
+          className="group relative overflow-hidden rounded-xl border border-navy-500/10 bg-navy-50 shadow-card transition-all hover:-translate-y-1 hover:border-navy-500/25 hover:shadow-book dark:border-obsidian-border dark:bg-obsidian-card dark:shadow-card-dark dark:hover:border-gilt-400/30"
         >
-          <div className="relative aspect-[4/3] overflow-hidden border-b border-navy-500/12 dark:border-gilt-400/12">
+          {/* Garis gradasi emas di atas, sama seperti kartu Koleksi Pilihan */}
+          <span
+            className="absolute inset-x-0 top-0 z-10 h-[3px] bg-gradient-to-r from-navy-500 via-gilt-400 to-navy-500 dark:from-gilt-500 dark:via-gilt-300 dark:to-gilt-500"
+            aria-hidden="true"
+          />
+
+          <div className="relative aspect-[4/3] overflow-hidden">
             {f.image ? (
-              <img src={f.image} alt={f.name} className="h-full w-full object-cover" />
+              <img
+                src={f.image}
+                alt={f.name}
+                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
             ) : (
-              <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-paper-texture bg-navy-50 dark:bg-ink-900">
+              <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-paper-texture bg-navy-100 dark:bg-ink-900">
                 <div className="text-navy-500/35 dark:text-gilt-300/35">
                   <FacilityIcon>{f.icon}</FacilityIcon>
                 </div>
@@ -116,19 +126,22 @@ export default function FacilityGallery() {
                 </span>
               </div>
             )}
-            <span className="absolute left-2 top-2 rounded-full bg-ink-900/70 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.15em] text-parchment-50 backdrop-blur-sm dark:bg-parchment-50/80 dark:text-ink-900">
+          </div>
+
+          <div className="p-4">
+            <span className="inline-block rounded-full bg-gilt-400/15 px-2 py-0.5 text-[11px] font-medium uppercase tracking-[0.1em] text-gilt-500 dark:text-gilt-300">
               Plat {f.roman}
             </span>
-          </div>
-          <figcaption className="p-3.5">
-            <p className="font-display text-sm font-semibold text-ink-900 dark:text-parchment-100">
+
+            <h3 className="mt-1.5 font-display text-sm font-semibold text-ink-900 group-hover:text-navy-500 dark:text-parchment-100 dark:group-hover:text-gilt-300">
               {f.name}
-            </p>
+            </h3>
+
             <p className="mt-1 text-xs leading-relaxed text-ink-800/65 dark:text-parchment-100/65">
               {f.desc}
             </p>
-          </figcaption>
-        </figure>
+          </div>
+        </div>
       ))}
     </div>
   )

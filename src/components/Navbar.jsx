@@ -32,6 +32,12 @@ export default function Navbar() {
         : 'text-ink-800/80 hover:text-navy-500 dark:text-parchment-100/80 dark:hover:text-gilt-300'
     }`
 
+  // Style tombol bulat yang dipakai bersama oleh tombol mode siang/malam DAN
+  // tombol logout, supaya keduanya punya tampilan & transisi hover yang sama
+  // persis (lingkaran, border, background, animasi warna saat hover).
+  const iconButtonClass =
+    'grid h-10 w-10 place-items-center rounded-full border border-navy-500/20 bg-parchment-100 text-navy-600 transition-colors hover:bg-navy-500/10 dark:border-gilt-400/20 dark:bg-ink-800 dark:text-gilt-300 dark:hover:bg-gilt-400/10'
+
   return (
     <header className="sticky top-0 z-40 border-b border-heritage-100 dark:border-obsidian-border bg-white/90 dark:bg-black/90 backdrop-blur">
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-5 lg:px-8">
@@ -113,13 +119,13 @@ export default function Navbar() {
           {/* Garis Pemisah (Divider) Estetik */}
           <span className="hidden h-6 w-px bg-ink-300/30 dark:bg-parchment-100/20 md:block"></span>
 
-          {/* Tombol Sleep Mode & Mobile Burger */}
+          {/* Tombol Sleep Mode, Logout (desktop), & Mobile Burger */}
           <div className="flex items-center gap-2">
             <button
               onClick={toggle}
               aria-label={isNight ? 'Aktifkan mode siang' : 'Aktifkan mode malam'}
               title={isNight ? 'Mode Siang' : 'Mode Malam'}
-              className="grid h-10 w-10 place-items-center rounded-full border border-navy-500/20 bg-parchment-100 text-navy-600 transition-colors hover:bg-navy-500/10 dark:border-gilt-400/20 dark:bg-ink-800 dark:text-gilt-300 dark:hover:bg-gilt-400/10"
+              className={iconButtonClass}
             >
               {isNight ? (
                 <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
@@ -133,6 +139,30 @@ export default function Navbar() {
               )}
             </button>
 
+            {/* Tombol Logout — dibuat SAMA PERSIS bentuk & animasinya dengan
+                tombol mode siang/malam di atas (lingkaran, border, transisi
+                warna saat hover), supaya konsisten secara visual. */}
+            <Link
+              to="/"
+              aria-label="Keluar"
+              title="Keluar"
+              className={`hidden md:grid ${iconButtonClass}`}
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+            </Link>
+
             <button
               className="grid h-10 w-10 place-items-center rounded-full text-ink-800 md:hidden dark:text-parchment-100"
               onClick={() => setMobileOpen((v) => !v)}
@@ -143,29 +173,6 @@ export default function Navbar() {
               </svg>
             </button>
           </div>
-
-          {/* Tombol Logout */}
-          <Link
-            to="/" 
-            className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-ink-600 transition-colors hover:bg-navy-500/10 hover:text-ink-900 dark:text-parchment-300 dark:hover:bg-gilt-400/10 dark:hover:text-parchment-100"
-            title="Keluar"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-              <polyline points="16 17 21 12 16 7"></polyline>
-              <line x1="21" y1="12" x2="9" y2="12"></line>
-            </svg>
-          </Link>
         </div>
       </div>
 
@@ -192,6 +199,28 @@ export default function Navbar() {
                 {item.label}
               </Link>
             ))}
+            {/* Tombol Logout versi mobile, konsisten dengan style tombol
+                bulat lain, ditaruh di akhir menu mobile. */}
+            <Link
+              to="/"
+              onClick={() => setMobileOpen(false)}
+              className="mt-3 flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-ink-600 transition-colors hover:bg-navy-500/10 hover:text-ink-900 dark:text-parchment-300 dark:hover:bg-gilt-400/10 dark:hover:text-parchment-100"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+              Keluar
+            </Link>
           </div>
         </div>
       )}

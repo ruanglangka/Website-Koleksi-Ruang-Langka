@@ -98,16 +98,26 @@ function BookPlaceholderIcon() {
 export default function ExampleGallery() {
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-      {EXAMPLES.map((ex) => (
-        <figure
-          key={ex.category}
-          className="group overflow-hidden rounded-lg border border-navy-500/15 bg-parchment-50 shadow-sm transition-shadow hover:shadow-book dark:border-gilt-400/15 dark:bg-ink-800"
+      {EXAMPLES.map((ex, idx) => (
+        <div
+          key={`${ex.category}-${idx}`}
+          className="group relative overflow-hidden rounded-xl border border-navy-500/10 bg-navy-50 shadow-card transition-all hover:-translate-y-1 hover:border-navy-500/25 hover:shadow-book dark:border-obsidian-border dark:bg-obsidian-card dark:shadow-card-dark dark:hover:border-gilt-400/30"
         >
-          <div className="relative aspect-[3/4] overflow-hidden border-b border-navy-500/12 dark:border-gilt-400/12">
+          {/* Garis gradasi emas di atas, sama seperti kartu-kartu lain */}
+          <span
+            className="absolute inset-x-0 top-0 z-10 h-[3px] bg-gradient-to-r from-navy-500 via-gilt-400 to-navy-500 dark:from-gilt-500 dark:via-gilt-300 dark:to-gilt-500"
+            aria-hidden="true"
+          />
+
+          <div className="relative aspect-[3/4] overflow-hidden">
             {ex.image ? (
-              <img src={ex.image} alt={ex.category} className="h-full w-full object-cover" />
+              <img
+                src={ex.image}
+                alt={ex.category}
+                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
             ) : (
-              <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-paper-texture bg-navy-50 px-3 text-center dark:bg-ink-900">
+              <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-paper-texture bg-navy-100 px-3 text-center dark:bg-ink-900">
                 <div className="text-navy-500/35 dark:text-gilt-300/35">
                   <BookPlaceholderIcon />
                 </div>
@@ -116,16 +126,17 @@ export default function ExampleGallery() {
                 </span>
               </div>
             )}
-            <span className="absolute left-2 top-2 max-w-[calc(100%-1rem)] truncate rounded-full bg-ink-900/70 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-parchment-50 backdrop-blur-sm dark:bg-parchment-50/80 dark:text-ink-900">
+          </div>
+
+          <div className="p-3">
+            <span className="inline-block max-w-full truncate rounded-full bg-gilt-400/15 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-gilt-500 dark:text-gilt-300">
               {ex.category}
             </span>
-          </div>
-          <figcaption className="p-3">
-            <p className="text-xs leading-relaxed text-ink-800/70 dark:text-parchment-100/70">
+            <p className="mt-1.5 text-xs leading-relaxed text-ink-800/70 dark:text-parchment-100/70">
               {ex.desc}
             </p>
-          </figcaption>
-        </figure>
+          </div>
+        </div>
       ))}
     </div>
   )
