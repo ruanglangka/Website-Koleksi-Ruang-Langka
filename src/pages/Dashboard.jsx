@@ -2,12 +2,13 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import BookRanking from '../components/BookRanking.jsx'
 import FeaturedBookCard from '../components/FeaturedBookCard.jsx'
-import AnimatedLogo from '../components/Mascot/Animated.jsx'; 
-import AnimatedPoint from '../components/Mascot/AnimatedPoint.jsx'; 
+import AnimatedLogo from '../components/Mascot/Animated.jsx' 
+import AnimatedPoint from '../components/Mascot/AnimatedPoint.jsx' 
 
-function resolveSrc(path) {
-  return `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`
-}
+// 1. Import gambar secara langsung
+import coverDongeng from '../assets/top/dongeng_koetjing_setiwelan.png'
+import coverMoesoeh from '../assets/top/moesoeh_dalam_selimoet.png'
+import coverSuluk from '../assets/top/suluk_plencung.png'
 
 const PANDUAN_CARDS = [
   {
@@ -42,7 +43,7 @@ const FEATURED_BOOKS_DATA = [
     publication: 'Weltevreden : Balepustaka, 1922',
     subject: 'Dongeng',
     language: 'Jawa',
-    coverUrl: 'src/assets/top/dongeng_koetjing_setiwelan.png', 
+    coverUrl: coverDongeng, // 2. Gunakan variabel gambar di sini
     description: 'Kucing Setiwelan merupakan dongeng adaptasi dari karya sastra "Puss in Boot" dengan versi bahasa jawa dan aksara jawa. Arti dari kata setiwelan ini adalah sepatu atau "steviuel" dalam bahasa belanda. Jadi untuk judul buku inimerupakan alih bahasa dari versi aslinya kedalam bahasa jawa. Buku ini, layaknya buku dongeng untuk anak-anak, yang dihiasi dengan ilustrasi yang mempesona dan penuh imajinasi. Tak hanya itu, setiap halamannya juga diperkaya dengan hiasan-hiasan yang indah. Yang menarik, untuk versi Jawa ini, ilustrasi yang digunakan mengusung nuansa Arab-Islam. Hal tersebut terlihat pada ornamen gambar yang menghiasi buku tersebut. Dalam versi Jawa, kucing itu disebut "Si Mulus", sementara tuannya yang asli bernama "Usman" lebih dikenal dengan julukan "Wuragil" atau "Si anak bungsu".',
   },
   {
@@ -52,7 +53,7 @@ const FEATURED_BOOKS_DATA = [
     translator: 'A.H. Wignjadisastra',
     publication: 'Weltevreden : Balai Poestaka, 1929',
     language: 'Indonesia',
-    coverUrl: 'src/assets/top/moesoeh_dalam_selimoet.png',
+    coverUrl: coverMoesoeh,
     description: 'Ketika kapal Lusitania ditorpedo, seorang pria misterius menitipkan dokumen rahasia yang sangat penting bagi keselamatan Inggris kepada Jane Finn. Sayangnya, tak lama setelah itu Jane menghilang tanpa jejak. Lima tahun berlalu, perang telah usai, namun krisis baru justru muncul. Dokumen krusial tersebut kini menjadi incaran "Tuan Brown", dalang licik dari sebuah organisasi besar yang berniat memicu revolusi kaum ekstrem, pemogokan buruh, dan teror pemerintahan. Dalam situasi genting ini, dua petualang muda, Tommy dan Tuppence Beresford, tanpa sengaja terseret ke dalam pusaran intrik perburuan dokumen tersebut. Mereka harus berpacu dengan waktu untuk menemukan Jane Finn, mengamankan dokumennya, dan mengungkap kedok "Tuan Brown" yang selama ini memanipulasi keadaan dari balik layar.',
     subject: 'Novel Fiksi Indonesia',
   },
@@ -61,7 +62,7 @@ const FEATURED_BOOKS_DATA = [
     title: 'Suluk Plencung',
     publication: 'Yogyakarta : Yopdyog, 2003',
     subject: 'Kesusastraan Jawa-- Tembang',
-    coverUrl: 'src/assets/top/suluk_plencung.png',
+    coverUrl: coverSuluk,
     description: 'Teks terdiri dari Dasanama, Yudaganara, Ajisaka, Piwulang, Sastra Gendhing, Nitisastra, Ngelmu, Dongeng, Ki Kewala, Wulangreh, Seh Tekawerdi, Sayid Dullah, Resi Ciptadriya, dan Suluk Pamungkas.',
     language: 'Jawa',
     workType: 'Puisi',

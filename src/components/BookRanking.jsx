@@ -1,12 +1,17 @@
 import React, { useState } from 'react'
 
+// 1. Import gambar secara langsung
+import coverDongeng from '../assets/top/dongeng_koetjing_setiwelan.png'
+import coverMoesoeh from '../assets/top/moesoeh_dalam_selimoet.png'
+import coverSuluk from '../assets/top/suluk_plencung.png'
+
 const RANKING = [
   {
     rank: 1,
     title: 'Dongeng Koetjing Setiwelan',
     subject: 'Dongeng',
     language: 'Jawa',
-    coverUrl: 'src/assets/top/dongeng_koetjing_setiwelan.png', 
+    coverUrl: coverDongeng, // 2. Gunakan variabel hasil import di sini
     description: 'Buku adaptasi dongeng "Puss in Boots" ke dalam bahasa dan aksara Jawa yang diperkaya dengan ilustrasi bernuansa Arab-Islam.',
   },
   {
@@ -14,7 +19,7 @@ const RANKING = [
     title: 'Moesoeh dalam Selimoet',
     author: 'Agatha Christie',
     language: 'Indonesia',
-    coverUrl: 'src/assets/top/moesoeh_dalam_selimoet.png',
+    coverUrl: coverMoesoeh,
     description: 'Buku terjemahan novel "The Secret Adversary" (1922) yang diterbitkan dalam jilid I dan II.',
     subject: 'Novel Fiksi Indonesia',
   },
@@ -23,7 +28,7 @@ const RANKING = [
     title: 'Suluk Plencung',
     publication: 'Yogyakarta : Yopdyog, 2003',
     subject: 'Kesusastraan Jawa-- Tembang',
-    coverUrl: 'src/assets/top/suluk_plencung.png',
+    coverUrl: coverSuluk,
     description: 'Teks terdiri dari Dasanama, Yudaganara, Ajisaka, Piwulang, Sastra Gendhing, Nitisastra, Ngelmu, Dongeng, Ki Kewala, Wulangreh, Seh Tekawerdi, Sayid Dullah, Resi Ciptadriya, dan Suluk Pamungkas.',
     language: 'Jawa',
     workType: 'Puisi',
@@ -34,11 +39,6 @@ const PODIUM = {
   1: { order: 'sm:order-2', height: 'h-72 sm:h-80', width: 'w-40 sm:w-52' },
   2: { order: 'sm:order-1', height: 'h-56 sm:h-64', width: 'w-36 sm:w-44' },
   3: { order: 'sm:order-3', height: 'h-56 sm:h-64', width: 'w-36 sm:w-44' },
-}
-
-function resolveSrc(path) {
-  if (!path) return null
-  return `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`
 }
 
 function CoverPlaceholder({ title }) {
@@ -71,7 +71,7 @@ function PodiumCard({ item, isOpen, onToggle, index }) {
         >
           {showPhoto ? (
             <img
-              src={resolveSrc(item.coverUrl)} 
+              src={item.coverUrl} // 3. Langsung panggil item.coverUrl
               alt={`Sampul ${item.title}`} 
               className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
               onError={() => setFailed(true)}
