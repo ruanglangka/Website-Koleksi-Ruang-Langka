@@ -3,6 +3,10 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 const AdminAuthContext = createContext(null)
 
 const STORAGE_KEY = 'rl_admin_session'
+const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID
+// Coba perpanjang token diam-diam sekian menit SEBELUM benar-benar kedaluwarsa,
+// supaya ada jeda aman sebelum Apps Script mulai menolaknya.
+const REFRESH_BEFORE_EXPIRY_MS = 2 * 60 * 1000
 
 // Dekode payload JWT (tanpa verifikasi tanda tangan) — HANYA dipakai untuk
 // menampilkan nama/email/foto di UI dan melacak kedaluwarsa di sisi klien.
@@ -26,12 +30,12 @@ function decodeJwt(token) {
 }
 
 function loadSession() {
-  const raw = sessionStorage.getItem(STORAGE_KEY)
+  const raw = localStorage.getItem(STORAGE_KEY)
   if (!raw) return null
   try {
     const parsed = JSON.parse(raw)
     if (!parsed.exp || parsed.exp * 1000 < Date.now()) {
-      sessionStorage.removeItem(STORAGE_KEY)
+      localStorage.removeItem(STORAGE_KEY)
       return null
     }
     return parsed
@@ -40,11 +44,41 @@ function loadSession() {
   }
 }
 
+/**
+ * Mencoba memperpanjang sesi TANPA menampilkan popup — memanfaatkan fitur
+ * "One Tap" Google: kalau browser masih ingat sesi Google admin (dan sudah
+ * pernah setuju sebelumnya), token baru akan diberikan otomatis. Kalau
+ * tidak (mis. admin sudah logout total dari akun Google-nya di browser
+ * itu), onFail() dipanggil dan admin baru diminta login manual lagi.
+ */
+function trySilentRefresh(onSuccess, onFail) {
+  if (!CLIENT_ID || !window.google?.accounts?.id) {
+    onFail()
+    return
+  }
+  try {
+    window.google.accounts.id.initialize({
+      client_id: CLIENT_ID,
+      auto_select: true,
+      callback: (response) => {
+        if (response?.credential) onSuccess(response.credential)
+        else onFail()
+      },
+    })
+    window.google.accounts.id.prompt((notification) => {
+      if (notification.isNotDisplayed?.() || notification.isSkippedMoment?.()) {
+        onFail()
+      }
+    })
+  } catch {
+    onFail()
+  }
+}
+
 export function AdminAuthProvider({ children }) {
   const [session, setSession] = useState(loadSession)
 
-  // Login token Google (ID token dari tombol Sign in) — dipanggil setelah
-  // server (whoami) mengonfirmasi email-nya ada di daftar admin.
+  // Login token Google (ID token dari tombol Sign in, atau dari refresh diam-diam)
   function login(idToken, claims) {
     const data = {
       idToken,
@@ -53,25 +87,46 @@ export function AdminAuthProvider({ children }) {
       picture: claims.picture,
       exp: claims.exp,
     }
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
     setSession(data)
   }
 
   function logout() {
-    sessionStorage.removeItem(STORAGE_KEY)
+    localStorage.removeItem(STORAGE_KEY)
     setSession(null)
   }
 
-  // Auto-logout begitu token kedaluwarsa (token Google ID biasanya valid ~1 jam)
+  // Jadwalkan perpanjangan diam-diam beberapa menit sebelum token kedaluwarsa.
+  // Kalau berhasil, login() dipanggil lagi dengan token baru — yang otomatis
+  // menjadwalkan ulang refresh berikutnya (efek ini jalan lagi karena `session`
+  // berubah) — jadi selama admin masih login Google di browser itu, sesi bisa
+  // terus diperpanjang tanpa batas tanpa perlu klik apa pun.
   useEffect(() => {
     if (!session) return undefined
-    const ms = session.exp * 1000 - Date.now()
-    if (ms <= 0) {
+
+    const msUntilExpiry = session.exp * 1000 - Date.now()
+    if (msUntilExpiry <= 0) {
       logout()
       return undefined
     }
-    const timer = setTimeout(logout, ms)
+
+    const msUntilRefresh = Math.max(msUntilExpiry - REFRESH_BEFORE_EXPIRY_MS, 1000)
+    const timer = setTimeout(() => {
+      trySilentRefresh(
+        (newIdToken) => {
+          const claims = decodeJwt(newIdToken)
+          if (claims) {
+            login(newIdToken, claims)
+          } else {
+            logout()
+          }
+        },
+        () => logout()
+      )
+    }, msUntilRefresh)
+
     return () => clearTimeout(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 
   return (

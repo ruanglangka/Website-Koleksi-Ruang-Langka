@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useTheme } from '../../context/ThemeContext.jsx'
 import { useAdminAuth } from '../../context/AdminAuthContext.jsx'
 import { fetchBooks } from '../../api/booksApi.js'
@@ -11,7 +11,8 @@ const LIMIT_OPTIONS = [10, 15, 25, 50, 100]
 
 export default function AdminPanel() {
   const { isNight, toggle } = useTheme()
-  const { session, logout } = useAdminAuth()
+  const { session } = useAdminAuth()
+  const navigate = useNavigate()
 
   const [searchInput, setSearchInput] = useState('')
   const debouncedSearch = useDebounce(searchInput, 400)
@@ -111,12 +112,12 @@ export default function AdminPanel() {
           <div className="flex shrink-0 items-center gap-3">
             <span className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-md bg-parchment-50 dark:bg-navy-500/15">
               <img
-                src="public/icons/day.png"
+                src="icons/day.png"
                 alt="Logo Karsa Siang"
                 className="block h-11 w-11 object-contain dark:hidden"
               />
               <img
-                src="public/icons/night.png"
+                src="icons/night.png"
                 alt="Logo Karsa Malam"
                 className="hidden h-11 w-11 object-contain dark:block"
               />
@@ -131,7 +132,7 @@ export default function AdminPanel() {
             </div>
           </div>
 
-          {/* KANAN: sesi admin, link situs publik, tombol tema & logout bulat */}
+          {/* KANAN: sesi admin, link situs publik, tombol tema & keluar bulat */}
           <div className="flex items-center gap-3">
             {session && (
               <div className="hidden items-center gap-2 rounded-full border border-navy-500/10 py-1 pl-1 pr-3 dark:border-gilt-400/15 sm:flex">
@@ -169,8 +170,14 @@ export default function AdminPanel() {
                 </svg>
               )}
             </button>
+            {/* "Keluar" cuma membawa balik ke halaman pilih peran — TIDAK
+                menghapus sesi login. Login Google-nya tetap tersimpan (dan
+                diperpanjang otomatis), jadi kalau pilih "Saya Admin" lagi
+                nanti, langsung masuk tanpa diminta login ulang. Sesi cuma
+                akan hilang kalau admin memang benar-benar sign-out dari
+                akun Google-nya sendiri di browser. */}
             <button
-              onClick={logout}
+              onClick={() => navigate('/')}
               aria-label="Keluar"
               title="Keluar"
               className="grid h-10 w-10 place-items-center rounded-full border border-navy-500/20 bg-parchment-100 text-navy-600 transition-colors hover:bg-navy-500/10 dark:border-gilt-400/20 dark:bg-ink-800 dark:text-gilt-300 dark:hover:bg-gilt-400/10"

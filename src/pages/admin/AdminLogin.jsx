@@ -1,20 +1,36 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import GoogleSignInButton from '../../components/GoogleSignInButton.jsx'
 import { useAdminAuth, decodeJwt } from '../../context/AdminAuthContext.jsx'
 import { verifyAdmin } from '../../api/adminApi.js'
 
 const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID
-// Mode percobaan HANYA aktif saat menjalankan `npm run dev` (import.meta.env.DEV),
-// tidak pernah ikut ke build production/GitHub Pages, dan hanya muncul selama
-// Client ID Google belum diisi.
+
 const SHOW_DEV_BYPASS = import.meta.env.DEV && !CLIENT_ID
 
 export default function AdminLogin() {
   const navigate = useNavigate()
-  const { login } = useAdminAuth()
+  const { login, isAuthenticated } = useAdminAuth()
+
+  useEffect(() => {
+    if (isAuthenticated) navigate('/admin', { replace: true })
+  }, [isAuthenticated, navigate])
+
   const [status, setStatus] = useState('idle') // idle | verifying | error
   const [errorMsg, setErrorMsg] = useState('')
+
+  // Sesi admin masih berlaku -> jangan tampilkan form login sama sekali,
+  // biarkan useEffect di atas yang mengarahkan ke /admin. loadSession()
+  // di AdminAuthContext dibaca sinkron dari localStorage saat context
+  // pertama kali diinisialisasi, jadi isAuthenticated di sini sudah benar
+  // sejak render pertama — form login tidak akan sempat "kelip" muncul.
+  if (isAuthenticated) {
+    return (
+      <div className="paper-grain flex min-h-screen items-center justify-center px-4">
+        <p className="text-sm text-ink-800/50 dark:text-parchment-100/50">Mengalihkan…</p>
+      </div>
+    )
+  }
 
   async function handleCredential(idToken) {
     setStatus('verifying')
@@ -34,9 +50,6 @@ export default function AdminLogin() {
     }
   }
 
-  // Sesi PALSU untuk sekadar melihat tampilan /admin. idToken-nya tidak asli,
-  // jadi Apps Script akan tetap menolak setiap aksi simpan/hapus data — ini
-  // memang disengaja, keamanan tetap berlaku di server.
   function handleDevBypass() {
     const fakeClaims = {
       email: 'admin-percobaan@lokal.dev',
@@ -100,7 +113,7 @@ export default function AdminLogin() {
           to="/"
           className="mt-6 inline-block text-sm text-navy-600 hover:underline dark:text-gilt-300"
         >
-          ← Kembali 
+          Kembali 
         </Link>
       </div>
     </div>
