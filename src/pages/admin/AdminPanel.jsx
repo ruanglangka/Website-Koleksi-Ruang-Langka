@@ -9,6 +9,30 @@ import { useDebounce } from '../../hooks/useDebounce.js'
 
 const LIMIT_OPTIONS = [10, 15, 25, 50, 100]
 
+// Opsi field pencarian — persis seperti selektor "Semua Field" di situs
+// publik. 'semua' berarti tidak membatasi field (cari di semua kolom).
+const SEARCH_FIELD_OPTIONS = [
+  { value: 'semua', label: 'Semua Field' },
+  { value: 'judul', label: 'Judul' },
+  { value: 'lokasiRak', label: 'Nomor Panggil' },
+  { value: 'aksara', label: 'Aksara' },
+  { value: 'nomorInduk', label: 'Nomor Induk' },
+]
+
+// Opsi sorting untuk tabel admin. value = `${field}-${dir}`, dipecah saat
+// dikirim ke fetchBooks. "urutan-asc" adalah sinyal khusus ke Code.gs supaya
+// TIDAK diurutkan ulang, dipertahankan sesuai urutan asli baris di
+// spreadsheet (kolom "NO") — ini dipakai sebagai default.
+const SORT_OPTIONS = [
+  { value: 'urutan-asc', label: 'Urutan Asli' },
+  { value: 'judul-asc', label: 'Judul (A-Z)' },
+  { value: 'judul-desc', label: 'Judul (Z-A)' },
+  { value: 'lokasiRak-asc', label: 'Nomor Panggil (A-Z)' },
+  { value: 'lokasiRak-desc', label: 'Nomor Panggil (Z-A)' },
+  { value: 'nomorInduk-asc', label: 'Nomor Induk (A-Z)' },
+  { value: 'nomorInduk-desc', label: 'Nomor Induk (Z-A)' },
+]
+
 export default function AdminPanel() {
   const { isNight, toggle } = useTheme()
   const { session } = useAdminAuth()
@@ -16,8 +40,11 @@ export default function AdminPanel() {
 
   const [searchInput, setSearchInput] = useState('')
   const debouncedSearch = useDebounce(searchInput, 400)
+  const [searchField, setSearchField] = useState('semua')
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(15)
+  const [sortValue, setSortValue] = useState('urutan-asc')
+  const [sortBy, sortDir] = sortValue.split('-')
 
   const [result, setResult] = useState({ items: [], total: 0, totalPages: 1 })
   const [status, setStatus] = useState('loading')
@@ -27,9 +54,14 @@ export default function AdminPanel() {
 
   function loadBooks() {
     setStatus('loading')
-    // sortBy: 'urutan' -> sinyal khusus ke Code.gs supaya TIDAK diurutkan ulang,
-    // dipertahankan sesuai urutan asli baris di spreadsheet (kolom "NO").
-    fetchBooks({ page, limit, search: debouncedSearch, sortBy: 'urutan', sortDir: 'asc' })
+    fetchBooks({
+      page,
+      limit,
+      search: debouncedSearch,
+      searchField: searchField === 'semua' ? undefined : searchField,
+      sortBy,
+      sortDir,
+    })
       .then((data) => {
         setResult(data)
         setStatus('done')
@@ -40,10 +72,20 @@ export default function AdminPanel() {
   useEffect(() => {
     loadBooks()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, limit, debouncedSearch])
+  }, [page, limit, debouncedSearch, searchField, sortValue])
 
   function handleLimitChange(newLimit) {
     setLimit(newLimit)
+    setPage(1)
+  }
+
+  function handleSearchFieldChange(newField) {
+    setSearchField(newField)
+    setPage(1)
+  }
+
+  function handleSortChange(newSortValue) {
+    setSortValue(newSortValue)
     setPage(1)
   }
 
@@ -238,27 +280,93 @@ export default function AdminPanel() {
         ) : (
           <>
             <div className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-navy-500/10 bg-navy-50/60 p-3 dark:border-gilt-400/10 dark:bg-ink-800/60">
-              <div className="relative max-w-xs flex-1">
-                <svg
-                  viewBox="0 0 24 24"
-                  className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-800/40 dark:text-parchment-100/40"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                >
-                  <circle cx="11" cy="11" r="7" />
-                  <path d="M20 20l-3-3" strokeLinecap="round" />
-                </svg>
-                <input
-                  value={searchInput}
-                  onChange={(e) => {
-                    setSearchInput(e.target.value)
-                    setPage(1)
-                  }}
-                  placeholder="Cari judul, nomor panggil..."
-                  className="w-full rounded-lg border border-navy-500/15 bg-parchment-50 py-2 pl-9 pr-3 text-sm text-ink-900 placeholder:text-ink-800/40 focus:border-navy-500 dark:border-gilt-400/15 dark:bg-obsidian-card dark:text-parchment-100 dark:placeholder:text-parchment-100/40"
-                />
+              <div className="flex flex-1 flex-wrap items-center gap-3">
+                {/* Input pencarian + selektor field digabung jadi satu grup,
+                    sama seperti di situs publik: kotak pencarian di kiri,
+                    dropdown "Semua Field" menempel di kanan. */}
+                <div className="flex max-w-md flex-1 overflow-hidden rounded-lg border border-navy-500/15 bg-parchment-50 focus-within:border-navy-500 dark:border-gilt-400/15 dark:bg-obsidian-card">
+                  <div className="relative flex-1">
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-800/40 dark:text-parchment-100/40"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                    >
+                      <circle cx="11" cy="11" r="7" />
+                      <path d="M20 20l-3-3" strokeLinecap="round" />
+                    </svg>
+                    <input
+                      value={searchInput}
+                      onChange={(e) => {
+                        setSearchInput(e.target.value)
+                        setPage(1)
+                      }}
+                      placeholder="Kata kunci..."
+                      className="w-full bg-transparent py-2 pl-9 pr-3 text-sm text-ink-900 placeholder:text-ink-800/40 focus:outline-none dark:text-parchment-100 dark:placeholder:text-parchment-100/40"
+                    />
+                  </div>
+                  <div className="relative shrink-0 border-l border-navy-500/15 dark:border-gilt-400/15">
+                    <select
+                      value={searchField}
+                      onChange={(e) => handleSearchFieldChange(e.target.value)}
+                      className="h-full appearance-none bg-navy-50/60 py-2 pl-3 pr-8 text-sm font-medium text-ink-900 focus:outline-none dark:bg-ink-800/60 dark:text-parchment-100"
+                      aria-label="Cari berdasarkan field"
+                    >
+                      {SEARCH_FIELD_OPTIONS.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="pointer-events-none absolute right-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-800/40 dark:text-parchment-100/40"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                    >
+                      <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </div>
+                </div>
+
+                {/* Dropdown sorting — sejajar dengan pencarian, sama seperti
+                    selektor urutan di situs publik. */}
+                <div className="relative">
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-800/40 dark:text-parchment-100/40"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                  >
+                    <path d="M6 8h12M8 12h8M10 16h4" strokeLinecap="round" />
+                  </svg>
+                  <select
+                    value={sortValue}
+                    onChange={(e) => handleSortChange(e.target.value)}
+                    className="min-w-[11rem] appearance-none rounded-lg border border-navy-500/15 bg-parchment-50 py-2 pl-9 pr-8 text-sm text-ink-900 focus:border-navy-500 dark:border-gilt-400/15 dark:bg-obsidian-card dark:text-parchment-100"
+                    aria-label="Urutkan berdasarkan"
+                  >
+                    {SORT_OPTIONS.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="pointer-events-none absolute right-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-800/40 dark:text-parchment-100/40"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                  >
+                    <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
               </div>
+
               <button
                 onClick={() => setFormMode('create')}
                 className="flex items-center gap-1.5 rounded-lg bg-navy-500 px-4 py-2 text-sm font-semibold text-parchment-50 shadow-book transition-colors hover:bg-navy-600 dark:bg-gilt-400 dark:text-ink-900 dark:hover:bg-gilt-300"
