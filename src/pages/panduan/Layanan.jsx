@@ -19,15 +19,11 @@ export default function Layanan() {
           <li>Koleksi di Ruang Langka hanya bersifat baca di tempat (Close-Access).</li>
           <li>Pemustaka wajib menuliskan koleksi yang akan dibaca pada kertas data.</li>
           <li>Pemustaka wajib menjaga koleksi yang dibaca.</li>
-          <li>Tidak diperkenankan untuk memfoto atau mengambil gambar dari koleksi yang dipinjam.</li>
-          <li>
-            Jika diperlukan akses lebih silahkan bersurat kepada Kepala Balai Layanan
+          <li> Jika diperlukan akses lebih silahkan bersurat kepada Kepala Balai Layanan
             Perpustakaan DPAD DIY.
           </li>
           <li>
-            Mengirimkan permohonan informasi yang dibutuhkan melalui surat permohonan foto
-            koleksi ditujukan ke Kepala Balai Yanpus DIY. Surat dapat dikirim langsung atau via
-            email. Disertai data diri dan kontak person.
+            Jika memfoto koleksi silahkan mengisi formulir yang di siapkan petugas
           </li>
         </ul>
       </Section>
