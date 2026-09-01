@@ -1,13 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-const FRAMES = {
-  idle: 'mascot/yokcaa.png',
-  blink: 'mascot/yokcaa.png',
-  wave: 'mascot/yokcaa.png',
-}
+// 1. Import gambar langsung dari folder src/assets
+import mascotIdle from '../../assets/mascot/yokcaa.png'
+import mascotBlink from '../../assets/mascot/yokcaa.png' // Ganti jika ada gambar khusus blink
+import mascotWave from '../../assets/mascot/yokcaa.png'  // Ganti jika ada gambar khusus wave
 
-function resolveSrc(path) {
-  return `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`
+// 2. Masukkan variabel gambar yang di-import ke dalam objek FRAMES
+const FRAMES = {
+  idle: mascotIdle,
+  blink: mascotBlink,
+  wave: mascotWave,
 }
 
 function rand(min, max) {
@@ -21,7 +23,6 @@ const BLINK_DURATION = 500
 const WAVE_MIN = 9000
 const WAVE_MAX = 16000
 const WAVE_DURATION = 1200
-
 
 export default function AnimatedLogo({ className = '', alt = 'Logo Ruang Langka', onError }) {
   const [frame, setFrame] = useState('idle')
@@ -83,7 +84,8 @@ export default function AnimatedLogo({ className = '', alt = 'Logo Ruang Langka'
       {Object.entries(FRAMES).map(([key, src]) => (
         <img
           key={key}
-          src={resolveSrc(src)}
+          // 3. Panggil langsung src-nya tanpa resolveSrc
+          src={src}
           alt={key === 'idle' ? alt : ''}
           aria-hidden={key !== 'idle'}
           onError={key === 'idle' ? onError : undefined}

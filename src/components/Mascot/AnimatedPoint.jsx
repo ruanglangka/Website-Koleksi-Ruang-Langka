@@ -1,13 +1,10 @@
 import React from 'react'
-
-function resolveSrc(path) {
-  return `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`
-}
+import mascotImage from '../../assets/mascot/yokcaa.png'
 
 export default function AnimatedPoint({ className = '', alt = 'Logo Ruang Langka', onError }) {
   return (
     <img
-      src={resolveSrc('mascot/yokcaa.png')}
+      src={mascotImage}
       alt={alt}
       onError={onError}
       className={`point-loop object-contain ${className}`}

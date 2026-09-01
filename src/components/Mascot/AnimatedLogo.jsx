@@ -1,16 +1,15 @@
 import React from 'react'
+import mascotLogo from '../../assets/mascot/yokcaa.png'
 
-function resolveSrc(path) {
-  return `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`
-}
-
-export default function AnimatedLogo({ className = '', alt = 'Logo Ruang Langka', onError }) {
+export default function StaticLogo({ className = '', alt = 'Logo Ruang Langka', onError }) {
   return (
-    <img
-      src={resolveSrc('mascot/yokcaa.png')}
-      alt={alt}
-      onError={onError}
-      className={`wave-loop object-contain ${className}`}
-    />
+    <div className={`relative border-0 bg-transparent p-0 ${className}`}>
+      <img
+        src={mascotLogo}
+        alt={alt}
+        onError={onError}
+        className="h-full w-full object-contain"
+      />
+    </div>
   )
 }

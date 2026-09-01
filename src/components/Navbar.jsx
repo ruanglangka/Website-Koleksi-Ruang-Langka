@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { useTheme } from '../context/ThemeContext.jsx'
+import dayLogo from '../assets/icons/day.png'
+import nightLogo from '../assets/icons/night.png'
 
 const PANDUAN_LINKS = [
   { to: '/panduan/fasilitas', label: 'Fasilitas Ruang Langka' },
@@ -47,13 +49,13 @@ export default function Navbar() {
           <span className="flex h-12 w-12 items-center justify-center rounded-md bg-parchment-50 dark:bg-navy-500/15 overflow-hidden">
             {/* Gambar Light Mode */}
             <img 
-              src="icons/day.png" 
+              src={dayLogo} 
               alt="Logo Karsa Siang" 
               className="h-15 w-15 object-contain block dark:hidden" 
             />
             {/* Gambar Dark Mode */}
             <img 
-              src="icons/night.png" 
+              src={nightLogo}
               alt="Logo Karsa Malam" 
               className="h-15 w-15 object-contain hidden dark:block" 
             />
