@@ -6,8 +6,8 @@ import { fetchBooks } from '../../api/booksApi.js'
 import { createBook, updateBook, deleteBook } from '../../api/adminApi.js'
 import BookForm from '../../components/admin/BookForm.jsx'
 import { useDebounce } from '../../hooks/useDebounce.js'
-import dayLogo from '../assets/icons/day.png'
-import nightLogo from '../assets/icons/night.png'
+import dayLogo from '../../assets/icons/day.png'
+import nightLogo from '../../assets/icons/night.png'
 
 const LIMIT_OPTIONS = [10, 15, 25, 50, 100]
 
