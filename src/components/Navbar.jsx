@@ -47,13 +47,13 @@ export default function Navbar() {
           <span className="flex h-12 w-12 items-center justify-center rounded-md bg-parchment-50 dark:bg-navy-500/15 overflow-hidden">
             {/* Gambar Light Mode */}
             <img 
-              src="public/icons/day.png" 
+              src="icons/day.png" 
               alt="Logo Karsa Siang" 
               className="h-15 w-15 object-contain block dark:hidden" 
             />
             {/* Gambar Dark Mode */}
             <img 
-              src="public/icons/night.png" 
+              src="icons/night.png" 
               alt="Logo Karsa Malam" 
               className="h-15 w-15 object-contain hidden dark:block" 
             />
