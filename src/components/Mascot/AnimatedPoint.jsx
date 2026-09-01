@@ -7,7 +7,7 @@ function resolveSrc(path) {
 export default function AnimatedPoint({ className = '', alt = 'Logo Ruang Langka', onError }) {
   return (
     <img
-      src={resolveSrc('mascot/yokcaa.png')}
+      src={resolveSrc('public/mascot/yokcaa.png')}
       alt={alt}
       onError={onError}
       className={`point-loop object-contain ${className}`}
