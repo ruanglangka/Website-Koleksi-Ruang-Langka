@@ -6,6 +6,8 @@ import { fetchBooks } from '../../api/booksApi.js'
 import { createBook, updateBook, deleteBook } from '../../api/adminApi.js'
 import BookForm from '../../components/admin/BookForm.jsx'
 import { useDebounce } from '../../hooks/useDebounce.js'
+import dayLogo from '../assets/icons/day.png'
+import nightLogo from '../assets/icons/night.png'
 
 const LIMIT_OPTIONS = [10, 15, 25, 50, 100]
 
@@ -154,12 +156,12 @@ export default function AdminPanel() {
           <div className="flex shrink-0 items-center gap-3">
             <span className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-md bg-parchment-50 dark:bg-navy-500/15">
               <img
-                src="icons/day.png"
+                src ={dayLogo}
                 alt="Logo Karsa Siang"
                 className="block h-11 w-11 object-contain dark:hidden"
               />
               <img
-                src="icons/night.png"
+                src={dayNight}
                 alt="Logo Karsa Malam"
                 className="hidden h-11 w-11 object-contain dark:block"
               />
