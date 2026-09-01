@@ -32,45 +32,49 @@ export default function Navbar() {
         : 'text-ink-800/80 hover:text-navy-500 dark:text-parchment-100/80 dark:hover:text-gilt-300'
     }`
 
+  // Style tombol bulat yang dipakai bersama oleh tombol mode siang/malam DAN
+  // tombol logout, supaya keduanya punya tampilan & transisi hover yang sama
+  // persis (lingkaran, border, background, animasi warna saat hover).
+  const iconButtonClass =
+    'grid h-10 w-10 place-items-center rounded-full border border-navy-500/20 bg-parchment-100 text-navy-600 transition-colors hover:bg-navy-500/10 dark:border-gilt-400/20 dark:bg-ink-800 dark:text-gilt-300 dark:hover:bg-gilt-400/10'
+
   return (
     <header className="sticky top-0 z-40 border-b border-heritage-100 dark:border-obsidian-border bg-white/90 dark:bg-black/90 backdrop-blur">
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-5 lg:px-8">
         
         {/* ===== KIRI: LOGO & JUDUL ===== */}
-        <Link to="/" className="flex items-center gap-4 shrink-0">
-        <span className="flex h-12 w-12 items-center justify-center rounded-md bg-heritage-700 dark:bg-obsidian-card overflow-hidden">
-          
-          {/* Gambar Light Mode (muncul saat terang, sembunyi saat gelap) */}
-          <img 
-            src="assets/day.png" 
-            alt="Logo Karsa Siang" 
-            className="h-15 w-15 object-contain block dark:hidden" 
-          />
-          {/* Gambar Dark Mode (sembunyi saat terang, muncul saat gelap) */}
-          <img 
-            src="assets/night.png" 
-            alt="Logo Karsa Malam" 
-            className="h-15 w-15 object-contain hidden dark:block" 
-          />
-
-        </span>
+        <Link to="/dashboard" className="flex items-center gap-4 shrink-0">
+          <span className="flex h-12 w-12 items-center justify-center rounded-md bg-parchment-50 dark:bg-navy-500/15 overflow-hidden">
+            {/* Gambar Light Mode */}
+            <img 
+              src="public/icons/day.png" 
+              alt="Logo Karsa Siang" 
+              className="h-15 w-15 object-contain block dark:hidden" 
+            />
+            {/* Gambar Dark Mode */}
+            <img 
+              src="public/icons/night.png" 
+              alt="Logo Karsa Malam" 
+              className="h-15 w-15 object-contain hidden dark:block" 
+            />
+          </span>
         
         <span className="leading-tight">
           <span className="block font-display text-2xl sm:text-3xl font-bold text-heritage-800 dark:text-heritage-50">
             Koleksi Ruang Langka
           </span>
           <span className="block text-[9px] uppercase tracking-[0.15em] text-ink-800/60 dark:text-parchment-100/60 sm:text-[10px]">
-            Balai Layanan Perpustakaan Pemda DIY
+            Balai Layanan Perpustakaan DPAD DIY
           </span>
         </span>
       </Link>
 
-        {/* ===== KANAN: MENU & TOMBOL (DIBUNGKUS DALAM SATU DIV) ===== */}
+        {/* ===== KANAN: MENU & TOMBOL ===== */}
         <div className="flex items-center gap-4 lg:gap-8 ml-auto">
           
           {/* Menu Navigasi Desktop */}
           <nav className="hidden items-center gap-8 md:flex">
-            <NavLink to="/" end className={linkClass}>
+            <NavLink to="/dashboard" end className={linkClass}>
               Home
             </NavLink>
             <NavLink to="/katalog" className={linkClass}>
@@ -82,7 +86,6 @@ export default function Navbar() {
                 onClick={() => setDropdownOpen((v) => !v)}
                 aria-expanded={dropdownOpen}
                 aria-haspopup="true"
-                // Mengubah gap-1 menjadi gap-2 agar panah 'v' berjarak dari teks
                 className="flex items-center gap-2 px-3 py-2 text-sm font-medium tracking-wide text-ink-800/80 transition-colors hover:text-navy-500 dark:text-parchment-100/80 dark:hover:text-gilt-300"
               >
                 Panduan
@@ -116,13 +119,13 @@ export default function Navbar() {
           {/* Garis Pemisah (Divider) Estetik */}
           <span className="hidden h-6 w-px bg-ink-300/30 dark:bg-parchment-100/20 md:block"></span>
 
-          {/* Tombol Sleep Mode & Mobile Burger */}
+          {/* Tombol Sleep Mode, Logout (desktop), & Mobile Burger */}
           <div className="flex items-center gap-2">
             <button
               onClick={toggle}
               aria-label={isNight ? 'Aktifkan mode siang' : 'Aktifkan mode malam'}
               title={isNight ? 'Mode Siang' : 'Mode Malam'}
-              className="grid h-10 w-10 place-items-center rounded-full border border-navy-500/20 bg-parchment-100 text-navy-600 transition-colors hover:bg-navy-500/10 dark:border-gilt-400/20 dark:bg-ink-800 dark:text-gilt-300 dark:hover:bg-gilt-400/10"
+              className={iconButtonClass}
             >
               {isNight ? (
                 <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
@@ -136,6 +139,30 @@ export default function Navbar() {
               )}
             </button>
 
+            {/* Tombol Logout — dibuat SAMA PERSIS bentuk & animasinya dengan
+                tombol mode siang/malam di atas (lingkaran, border, transisi
+                warna saat hover), supaya konsisten secara visual. */}
+            <Link
+              to="/"
+              aria-label="Keluar"
+              title="Keluar"
+              className={`hidden md:grid ${iconButtonClass}`}
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+            </Link>
+
             <button
               className="grid h-10 w-10 place-items-center rounded-full text-ink-800 md:hidden dark:text-parchment-100"
               onClick={() => setMobileOpen((v) => !v)}
@@ -146,7 +173,6 @@ export default function Navbar() {
               </svg>
             </button>
           </div>
-
         </div>
       </div>
 
@@ -154,7 +180,7 @@ export default function Navbar() {
       {mobileOpen && (
         <div className="border-t border-navy-500/15 bg-parchment-50 px-4 py-3 md:hidden dark:border-gilt-400/10 dark:bg-ink-900">
           <div className="flex flex-col">
-            <NavLink to="/" end onClick={() => setMobileOpen(false)} className={linkClass}>
+            <NavLink to="/dashboard" end onClick={() => setMobileOpen(false)} className={linkClass}>
               Home
             </NavLink>
             <NavLink to="/katalog" onClick={() => setMobileOpen(false)} className={linkClass}>
@@ -173,6 +199,28 @@ export default function Navbar() {
                 {item.label}
               </Link>
             ))}
+            {/* Tombol Logout versi mobile, konsisten dengan style tombol
+                bulat lain, ditaruh di akhir menu mobile. */}
+            <Link
+              to="/"
+              onClick={() => setMobileOpen(false)}
+              className="mt-3 flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-ink-600 transition-colors hover:bg-navy-500/10 hover:text-ink-900 dark:text-parchment-300 dark:hover:bg-gilt-400/10 dark:hover:text-parchment-100"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+              Keluar
+            </Link>
           </div>
         </div>
       )}

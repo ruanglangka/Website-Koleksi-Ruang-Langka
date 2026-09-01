@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 const FRAMES = {
-  idle: 'assets/idle.png',
-  blink: 'assets/blink.png',
-  wave: 'assets/wave.png',
+  idle: 'mascot/yokcaa.png',
+  blink: 'mascot/yokcaa.png',
+  wave: 'mascot/yokcaa.png',
 }
 
 function resolveSrc(path) {

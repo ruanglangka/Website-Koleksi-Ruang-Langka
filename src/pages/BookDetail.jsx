@@ -4,12 +4,10 @@ import { fetchBookById } from '../api/booksApi.js'
 import { ErrorState } from '../components/StatusStates.jsx'
 
 const FIELD_LABELS = [
-  ['penulis', 'Penulis / Penyalin'],
-  ['kategori', 'Kategori'],
-  ['tahun', 'Tahun'],
-  ['bahasa', 'Bahasa'],
-  ['lokasiRak', 'Lokasi Rak'],
-  ['kondisi', 'Kondisi Fisik'],
+  ['lokasiRak', 'Nomor Panggil'],
+  ['aksara', 'Aksara'],
+  ['nomorInduk', 'Nomor Induk'],
+  ['kondisi', 'Status di Rak'],
 ]
 
 export default function BookDetail() {
@@ -42,8 +40,7 @@ export default function BookDetail() {
     return (
       <div className="mx-auto max-w-5xl animate-pulse px-4 py-12 sm:px-6 lg:px-8">
         <div className="h-4 w-32 rounded bg-navy-500/10 dark:bg-gilt-400/10" />
-        <div className="mt-8 grid grid-cols-1 gap-10 sm:grid-cols-[240px_1fr]">
-          <div className="aspect-[3/4] rounded-lg bg-navy-500/10 dark:bg-gilt-400/10" />
+      <div className="mt-6 max-w-2xl">
           <div className="space-y-3">
             <div className="h-3 w-24 rounded bg-navy-500/10 dark:bg-gilt-400/10" />
             <div className="h-7 w-3/4 rounded bg-navy-500/10 dark:bg-gilt-400/10" />
@@ -118,25 +115,14 @@ export default function BookDetail() {
         </Link>
       </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-10 sm:grid-cols-[240px_1fr] sm:items-start">
-        {/* Cover Display (Tanpa Fitur Upload) */}
-        <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-gradient-to-br from-navy-500/90 to-navy-700 shadow-book ring-1 ring-navy-900/10">
-          {book.sampul ? (
-            <img src={book.sampul} alt={book.judul} className="h-full w-full object-cover" />
-          ) : (
-            <div className="grid h-full w-full place-items-center p-4 text-center">
-              <span className="font-display text-sm leading-snug text-parchment-50/80">
-                {book.judul}
-              </span>
-            </div>
-          )}
-        </div>
-
+      <div className="mt-6 max-w-2xl">
         {/* Details */}
         <div>
-          <span className="inline-block rounded-full bg-gilt-400/15 px-2.5 py-1 text-xs font-medium text-gilt-500 dark:text-gilt-300">
-            {book.kategori}
-          </span>
+          {book.lokasiRak && (
+            <span className="inline-block rounded-full bg-gilt-400/15 px-2.5 py-1 text-xs font-medium text-gilt-500 dark:text-gilt-300">
+              {book.lokasiRak}
+            </span>
+          )}
           <h1 className="mt-3 font-display text-2xl font-semibold leading-snug text-ink-900 dark:text-parchment-100 sm:text-3xl">
             {book.judul}
           </h1>

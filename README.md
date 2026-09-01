@@ -1,6 +1,6 @@
 # Koleksi Ruang Langka
 
-Katalog digital untuk koleksi Ruang Langka — Balai Layanan Perpustakaan Pemda DIY.
+Katalog digital untuk koleksi Ruang Langka — Balai Layanan Perpustakaan DPAD DIY.
 Dibangun dengan **React + Vite + Tailwind CSS**, dengan data (±13.253 koleksi buku)
 diambil langsung dari **Google Spreadsheet** melalui **Google Apps Script** yang
 berfungsi sebagai API gratis.
@@ -43,23 +43,27 @@ ruang-langka/
 
 ## 2. Langkah 1 — Pindahkan Data Excel ke Google Spreadsheet
 
-1. Buka [Google Sheets](https://sheets.google.com), buat spreadsheet baru.
+1. Buka [Google Sheets](https://sheets.google.com), buat spreadsheet baru
+   (atau pakai spreadsheet yang sudah ada, mis. `Katalog Baru Ruang Koleksi Langka`).
 2. Import file Excel: **File → Import → Upload**, pilih file `.xlsx` kamu,
    lalu pilih "Insert new sheet(s)" atau "Replace spreadsheet".
-3. Ganti nama tab/sheet menjadi **`Data Buku`** (atau sesuaikan `SHEET_NAME`
-   di `apps-script/Code.gs`).
-4. Pastikan **baris pertama (header)** berisi nama kolom berikut (urutan bebas,
-   tidak case-sensitive):
+3. Ganti nama tab/sheet menjadi **`Sheet1`** (atau sesuaikan `SHEET_NAME`
+   di `apps-script/Code.gs` supaya sama dengan nama tab kamu).
+4. Baris pertama (baris 1) boleh dikosongkan/untuk judul, baris **kedua (baris 2)**
+   harus berisi nama kolom berikut persis (urutan bebas, tidak case-sensitive):
 
-   | id | judul | penulis | kategori | tahun | bahasa | lokasiRak | kondisi | deskripsi | sampul |
-   |----|-------|---------|----------|-------|--------|-----------|---------|-----------|--------|
+   | NO | NOMOR PANGGIL | DATA BIBLIOGRAFIS | STATUS DI RAK | AKSARA | NOMOR INDUK |
+   |----|----------------|--------------------|-----------------|--------|--------------|
 
-   - `id` boleh dikosongkan (akan otomatis diisi nomor baris).
-   - `sampul` diisi URL gambar sampul buku (opsional, boleh dikosongkan).
-   - Kolom lain bebas ditambah — kolom tambahan tidak akan mengganggu, hanya
-     tidak ditampilkan kecuali kamu menambahkannya juga di `BookDetail.jsx`.
+   - `NO` cuma nomor urut, tidak dipakai sebagai id (id koleksi otomatis
+     diambil dari posisi barisnya).
+   - `DATA BIBLIOGRAFIS` dipakai sebagai judul koleksi.
+   - `STATUS DI RAK` menunjukkan kondisi/ketersediaan koleksi (mis. "Tersedia").
+   - Kolom lain bebas ditambah — tidak akan mengganggu, hanya tidak ditampilkan
+     kecuali kamu tambahkan juga pemetaannya di `COLUMN_MAP` (`apps-script/Code.gs`)
+     dan di `FIELD_LABELS` (`src/pages/BookDetail.jsx`).
 
-5. Baris 2 dan seterusnya diisi data ke-13.253 koleksi buku.
+5. Baris 3 dan seterusnya diisi data ke-13.253 koleksi buku.
 
 > 💡 Karena datanya besar (13rb+ baris), pastikan tidak ada baris kosong di
 > tengah data — baris kosong akan otomatis dilewati oleh API, tapi lebih rapi
@@ -182,7 +186,70 @@ Lalu di **Settings → Pages**, pilih Source: branch `gh-pages`.
 
 ---
 
-## 9. Sesuaikan Konten
+## 9. Setup Admin (Google Login)
+
+Situs ini punya 2 peran: **Pengunjung** (baca saja, tanpa login) dan **Admin**
+(bisa tambah/ubah/hapus koleksi lewat web, tersinkron ke Google Spreadsheet).
+
+### 9.1 Buat OAuth Client ID (gratis, tanpa kartu kredit)
+
+1. Buka [console.cloud.google.com](https://console.cloud.google.com), buat project baru.
+2. **APIs & Services → OAuth consent screen** — pilih User Type "External",
+   isi nama aplikasi & email. Di bagian **Test users**, tambahkan email semua
+   admin yang boleh akses (wajib selama status masih "Testing" — dan untuk
+   admin internal, kamu tidak perlu keluar dari status Testing / verifikasi
+   Google sama sekali).
+3. **APIs & Services → Credentials → Create Credentials → OAuth client ID**.
+   - Application type: **Web application**
+   - Authorized JavaScript origins: tambahkan URL situsmu, misal
+     `https://username.github.io` (dan `http://localhost:5173` untuk testing lokal)
+4. Salin **Client ID** yang dihasilkan (formatnya `xxxx.apps.googleusercontent.com`).
+
+### 9.2 Pasang Client ID & daftar email admin
+
+**Di React (`.env`):**
+```
+VITE_GOOGLE_CLIENT_ID=xxxx.apps.googleusercontent.com
+```
+(Untuk GitHub Actions, tambahkan juga sebagai repository secret bernama
+`VITE_GOOGLE_CLIENT_ID`, lalu tambahkan barisnya di
+`.github/workflows/deploy.yml` seperti `VITE_API_URL`.)
+
+**Di Apps Script** (buka project Apps Script → ikon gear ⚙ **Project Settings**
+→ bagian **Script Properties** → **Add script property**):
+
+| Property | Value |
+|---|---|
+| `GOOGLE_CLIENT_ID` | Client ID yang sama seperti di atas |
+| `ADMIN_EMAILS` | Email admin dipisah koma, mis. `a@gmail.com,b@gmail.com` |
+
+Menyimpan email di sini (bukan di kode) artinya kamu bisa menambah/mengurangi
+admin kapan saja tanpa perlu deploy ulang situs.
+
+### 9.3 Cara kerja alur admin
+
+```
+/            → halaman pilih peran (Pengunjung / Admin)
+/dashboard   → sisi publik (sama seperti sebelumnya, tanpa login)
+/admin/login → tombol "Sign in with Google"
+/admin       → panel admin (tabel + tambah/ubah/hapus), dilindungi
+```
+
+Setiap aksi tulis (tambah/ubah/hapus) mengirim **ID token Google** ke Apps
+Script, yang lalu:
+1. Memverifikasi token itu ke server Google (`oauth2.googleapis.com/tokeninfo`) — memastikan asli & belum kedaluwarsa.
+2. Mencocokkan emailnya ke daftar `ADMIN_EMAILS`.
+3. Baru kalau lolos keduanya, perubahan ditulis ke Spreadsheet.
+
+Kalau token dipalsukan atau emailnya tidak terdaftar, Apps Script menolak —
+jadi keamanan sesungguhnya ada di server, bukan di kode React (yang bisa
+dilihat siapa saja karena open source di GitHub).
+
+**Keterbatasan yang perlu diketahui:** token Google ID biasanya berlaku ~1 jam,
+setelah itu admin perlu login ulang (sesi tidak diperpanjang otomatis) — cukup
+untuk sesi kerja admin biasa.
+
+## 10. Sesuaikan Konten
 
 - Tautan sosial media & alamat: `src/components/Footer.jsx`
 - Teks panduan: `src/pages/panduan/*.jsx`

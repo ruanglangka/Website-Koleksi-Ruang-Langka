@@ -3,28 +3,43 @@ import { useSearchParams } from 'react-router-dom'
 import BookCard from '../components/BookCard.jsx'
 import Pagination from '../components/Pagination.jsx'
 import { LoadingGrid, ErrorState, EmptyState } from '../components/StatusStates.jsx'
-import { fetchBooks, fetchCategories } from '../api/booksApi.js'
+import { fetchBooks } from '../api/booksApi.js'
 import { useDebounce } from '../hooks/useDebounce.js'
 
 const LIMIT = 20
 
+// PENTING: value di sini harus SAMA PERSIS dengan nama field pada data
+// hasil pemetaan COLUMN_MAP di Code.gs, yaitu:
+//   'nomor panggil'     -> lokasiRak
+//   'data bibliografis' -> judul
+//   'status di rak'     -> kondisi
+//   'aksara'            -> aksara
+//   'nomor induk'        -> nomorInduk
+// (BUKAN 'bahasa' atau 'id' — nama itu tidak ada di data asli, hanya ada
+// di data contoh/mock lama, sehingga sorting berdasarkan Aksara / Nomor
+// Induk sebelumnya tidak berfungsi.)
 const SORT_OPTIONS = [
   { value: 'judul-asc', label: 'Judul (A–Z)' },
   { value: 'judul-desc', label: 'Judul (Z–A)' },
-  { value: 'tahun-asc', label: 'Tahun (Terlama)' },
-  { value: 'tahun-desc', label: 'Tahun (Terbaru)' },
+  { value: 'lokasiRak-asc', label: 'Nomor Panggil (Terawal)' },
+  { value: 'lokasiRak-desc', label: 'Nomor Panggil (Terakhir)' },
+  { value: 'aksara-asc', label: 'Aksara (A–Z)' },
+  { value: 'aksara-desc', label: 'Aksara (Z–A)' },
+  { value: 'nomorInduk-asc', label: 'Nomor Induk (Terawal)' },
+  { value: 'nomorInduk-desc', label: 'Nomor Induk (Terakhir)' },
 ]
 
 // Pilihan field pencarian, ala OPAC iPusnas: user pilih dulu mau cari
 // berdasarkan apa, baru ketik kata kuncinya.
+// PENTING: value di sini harus SAMA PERSIS dengan nama field pada data
+// (hasil pemetaan header Spreadsheet), bukan label tampilan — itu sebabnya
+// "Aksara" pakai value 'aksara' dan "Nomor Induk" pakai 'nomorInduk'.
 const SEARCH_FIELD_OPTIONS = [
-  { value: 'semua', label: 'Sembarang' },
+  { value: 'semua', label: 'Semua Field' },
   { value: 'judul', label: 'Judul' },
-  { value: 'penulis', label: 'Pengarang' },
-  { value: 'kategori', label: 'Subyek/Kategori' },
-  { value: 'tahun', label: 'Tahun Terbit' },
   { value: 'lokasiRak', label: 'Nomor Panggil' },
-  { value: 'id', label: 'Item Id' },
+  { value: 'aksara', label: 'Aksara' },
+  { value: 'nomorInduk', label: 'Nomor Induk' },
 ]
 
 export default function Katalog() {
@@ -34,18 +49,12 @@ export default function Katalog() {
   const debouncedSearch = useDebounce(searchInput, 400)
   const searchField = searchParams.get('field') || 'semua'
 
-  const kategori = searchParams.get('kategori') || ''
   const sort = searchParams.get('sort') || 'judul-asc'
   const page = Number(searchParams.get('page') || 1)
   const [sortBy, sortDir] = sort.split('-')
 
-  const [categories, setCategories] = useState([])
   const [result, setResult] = useState({ items: [], total: 0, totalPages: 1 })
   const [status, setStatus] = useState('loading')
-
-  useEffect(() => {
-    fetchCategories().then(setCategories).catch(() => setCategories([]))
-  }, [])
 
   // sinkronkan input pencarian (debounced) ke URL, reset ke halaman 1
   useEffect(() => {
@@ -67,7 +76,6 @@ export default function Katalog() {
       limit: LIMIT,
       search: searchParams.get('q') || '',
       searchField,
-      kategori,
       sortBy,
       sortDir,
     })
@@ -80,7 +88,7 @@ export default function Katalog() {
     return () => {
       alive = false
     }
-  }, [page, searchParams, searchField, kategori, sortBy, sortDir])
+  }, [page, searchParams, searchField, sortBy, sortDir])
 
   function updateParam(key, value) {
     const next = new URLSearchParams(searchParams)
@@ -99,11 +107,15 @@ export default function Katalog() {
         <h1 className="mt-1 font-display text-2xl font-semibold text-ink-900 dark:text-parchment-100 sm:text-3xl">
           Cari Koleksi Ruang Langka
         </h1>
+        {status === 'done' && (
+        <p className="mt-2 text-sm text-ink-600 dark:text-parchment-300">
+          Menampilkan <strong>{result.total}</strong> data koleksi yang telah terdigitalisasi dari total fisik ±13.000 eksemplar
+        </p>
+      )}
       </div>
 
       {/* Search + sorting */}
-      <div className="mb-6 flex flex-col gap-3 rounded-xl border border-navy-500/12 bg-parchment-100/60 p-4 dark:border-gilt-400/10 dark:bg-ink-800/60 sm:flex-row sm:items-center">
-        {/* Kotak kata kunci + pilihan field pencarian (ala OPAC) menyatu jadi satu grup */}
+      <div className="mb-6 flex flex-col gap-3 rounded-xl border border-navy-500/12 bg-parchment-100/60 p-4 dark:border-gilt-400/10 dark:bg-ink-800/60 sm:flex-row sm:items-center"> {/* Kotak kata kunci + pilihan field pencarian (ala OPAC) menyatu jadi satu grup */}
         <div className="flex flex-1 flex-col overflow-hidden rounded-lg border border-navy-500/15 dark:border-gilt-400/15 sm:flex-row">
           <div className="relative flex-1">
             <svg
@@ -136,19 +148,6 @@ export default function Katalog() {
             ))}
           </select>
         </div>
-
-        <select
-          value={kategori}
-          onChange={(e) => updateParam('kategori', e.target.value)}
-          className="rounded-lg border border-navy-500/15 bg-parchment-50 px-3 py-2.5 text-sm text-ink-900 dark:border-gilt-400/15 dark:bg-ink-900 dark:text-parchment-100"
-        >
-          <option value="">Semua Kategori</option>
-          {categories.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
-          ))}
-        </select>
 
         <select
           value={sort}

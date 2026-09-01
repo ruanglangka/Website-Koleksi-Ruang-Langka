@@ -1,4 +1,16 @@
 import React from 'react'
+import manuskrip1Photo from '../assets/koleksi/manuskrip1.png'
+import manuskrip2Photo from '../assets/koleksi/manuskrip2.png'
+import inggrisCetakPhoto from '../assets/koleksi/inggrisCetak.png'
+import arabPegon1Photo from '../assets/koleksi/arabPegon1.png'
+import arabPegon2Photo from '../assets/koleksi/arabPegon2.png'
+import belandaCetakPhoto from '../assets/koleksi/belandaCetak.png'
+import jawaCetak1Photo from '../assets/koleksi/jawaCetak1.png'
+import jawaCetak2Photo from '../assets/koleksi/jawaCetak2.png'
+import jawaCetak3Photo from '../assets/koleksi/jawaCetak3.png'
+import melayuCetakPhoto from '../assets/koleksi/melayuCetak.png'
+import jawaReproduksi1Photo from '../assets/koleksi/jawaReproduksi1.png'
+import jawaReproduksi2Photo from '../assets/koleksi/jawaReproduksi2.png'
 
 // Sama seperti FacilityGallery: isi `image` dengan hasil import foto asli
 // (mis. import manuskrip1 from '../assets/koleksi/manuskrip-1.jpg') untuk
@@ -7,37 +19,62 @@ const EXAMPLES = [
   {
     category: 'Manuskrip',
     desc: 'Naskah tulisan tangan, salah satu bentuk koleksi langka tertua di Ruang Langka.',
-    image: null,
+    image: manuskrip1Photo,
   },
   {
-    category: 'Cetakan Inggris',
+    category: 'Manuskrip',
+    desc: 'Naskah tulisan tangan, salah satu bentuk koleksi langka tertua di Ruang Langka.',
+    image: manuskrip2Photo,
+  },
+  {
+    category: 'Inggris Cetak',
     desc: 'Buku cetak berbahasa Inggris dari masa penerbitan lawas.',
-    image: null,
+    image: inggrisCetakPhoto,
   },
   {
-    category: 'Cetakan Belanda',
+    category: 'Belanda Cetak',
     desc: 'Terbitan berbahasa Belanda, banyak berasal dari masa kolonial.',
-    image: null,
+    image: belandaCetakPhoto,
   },
   {
-    category: 'Cetakan Jawa',
+    category: 'Jawa Cetak',
     desc: 'Buku cetak beraksara atau berbahasa Jawa dari berbagai era penerbitan.',
-    image: null,
+    image: jawaCetak1Photo,
   },
   {
-    category: 'Cetakan Melayu',
+    category: 'Jawa Cetak',
+    desc: 'Buku cetak beraksara atau berbahasa Jawa dari berbagai era penerbitan.',
+    image: jawaCetak2Photo,
+  },
+  {
+    category: 'Jawa Cetak',
+    desc: 'Buku cetak beraksara atau berbahasa Jawa dari berbagai era penerbitan.',
+    image: jawaCetak3Photo,
+  },
+  {
+    category: 'Melayu Cetak',
     desc: 'Terbitan berbahasa Melayu yang kini sudah sulit ditemukan di pasaran.',
-    image: null,
+    image: melayuCetakPhoto,
   },
   {
-    category: 'Reproduksi Jawa',
+    category: 'Jawa Reproduksi',
     desc: 'Hasil alih media/reproduksi dari naskah atau cetakan Jawa asli.',
-    image: null,
+    image: jawaReproduksi1Photo,
+  },
+  {
+    category: 'Jawa Reproduksi',
+    desc: 'Hasil alih media/reproduksi dari naskah atau cetakan Jawa asli.',
+    image: jawaReproduksi2Photo,
   },
   {
     category: 'Arab Pegon',
     desc: 'Naskah berbahasa Jawa/Melayu yang ditulis dengan aksara Arab Pegon.',
-    image: null,
+    image: arabPegon1Photo,
+  },
+  {
+    category: 'Arab Pegon',
+    desc: 'Naskah berbahasa Jawa/Melayu yang ditulis dengan aksara Arab Pegon.',
+    image: arabPegon2Photo,
   },
 ]
 
@@ -61,16 +98,26 @@ function BookPlaceholderIcon() {
 export default function ExampleGallery() {
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-      {EXAMPLES.map((ex) => (
-        <figure
-          key={ex.category}
-          className="group overflow-hidden rounded-lg border border-navy-500/15 bg-parchment-50 shadow-sm transition-shadow hover:shadow-book dark:border-gilt-400/15 dark:bg-ink-800"
+      {EXAMPLES.map((ex, idx) => (
+        <div
+          key={`${ex.category}-${idx}`}
+          className="group relative overflow-hidden rounded-xl border border-navy-500/10 bg-navy-50 shadow-card transition-all hover:-translate-y-1 hover:border-navy-500/25 hover:shadow-book dark:border-obsidian-border dark:bg-obsidian-card dark:shadow-card-dark dark:hover:border-gilt-400/30"
         >
-          <div className="relative aspect-[3/4] overflow-hidden border-b border-navy-500/12 dark:border-gilt-400/12">
+          {/* Garis gradasi emas di atas, sama seperti kartu-kartu lain */}
+          <span
+            className="absolute inset-x-0 top-0 z-10 h-[3px] bg-gradient-to-r from-navy-500 via-gilt-400 to-navy-500 dark:from-gilt-500 dark:via-gilt-300 dark:to-gilt-500"
+            aria-hidden="true"
+          />
+
+          <div className="relative aspect-[3/4] overflow-hidden">
             {ex.image ? (
-              <img src={ex.image} alt={ex.category} className="h-full w-full object-cover" />
+              <img
+                src={ex.image}
+                alt={ex.category}
+                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
             ) : (
-              <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-paper-texture bg-navy-50 px-3 text-center dark:bg-ink-900">
+              <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-paper-texture bg-navy-100 px-3 text-center dark:bg-ink-900">
                 <div className="text-navy-500/35 dark:text-gilt-300/35">
                   <BookPlaceholderIcon />
                 </div>
@@ -79,16 +126,17 @@ export default function ExampleGallery() {
                 </span>
               </div>
             )}
-            <span className="absolute left-2 top-2 max-w-[calc(100%-1rem)] truncate rounded-full bg-ink-900/70 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-parchment-50 backdrop-blur-sm dark:bg-parchment-50/80 dark:text-ink-900">
+          </div>
+
+          <div className="p-3">
+            <span className="inline-block max-w-full truncate rounded-full bg-gilt-400/15 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-gilt-500 dark:text-gilt-300">
               {ex.category}
             </span>
-          </div>
-          <figcaption className="p-3">
-            <p className="text-xs leading-relaxed text-ink-800/70 dark:text-parchment-100/70">
+            <p className="mt-1.5 text-xs leading-relaxed text-ink-800/70 dark:text-parchment-100/70">
               {ex.desc}
             </p>
-          </figcaption>
-        </figure>
+          </div>
+        </div>
       ))}
     </div>
   )

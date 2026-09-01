@@ -6,7 +6,7 @@ export default function Fasilitas() {
   return (
     <PanduanLayout eyebrow="Panduan Pengunjung" title="Fasilitas Ruang Langka">
       <Section title="Pengertian Ruang Langka">
-        <p>
+        <p className="text-justify mb-4">
           Ruang koleksi langka adalah ruangan atau bagian khusus dalam
           perpustakaan Grahatama Pustaka yang digunakan untuk
           menyimpan, mengelola, dan melestarikan bahan pustaka yang
@@ -18,7 +18,7 @@ export default function Fasilitas() {
           menjaga keutuhan dan keaslian koleksi agar tetap terpelihara untuk
           kepentingan penelitian, pendidikan, dan pelestarian warisan budaya.
         </p>
-        <p>
+        <p className="text-justify mb-4">
           Ruang koleksi langka Grahatama Pustaka terletak di lantai 2, Gedung
           Grahatama Pustaka di Jl. Raya Janti, Wonocatur, Banguntapan, Kec.
           Banguntapan, Kabupaten Bantul, Daerah Istimewa Yogyakarta

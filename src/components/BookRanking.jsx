@@ -3,30 +3,30 @@ import React, { useState } from 'react'
 const RANKING = [
   {
     rank: 1,
-    judul: 'Dongeng Koetjing Setiwelan',
-    penulis: 'Anonim, alih aksara Jawa',
-    kategori: 'Dongeng',
-    label: 'Cat. No. 001',
-    keterangan: 'Naskah alih aksara Jawa yang paling sering dipinjam bulan ini.',
-    sampul: 'assets/dongeng_koetjing_setiwelan.png',
+    title: 'Dongeng Koetjing Setiwelan',
+    subject: 'Dongeng',
+    language: 'Jawa',
+    coverUrl: 'src/assets/top/dongeng_koetjing_setiwelan.png', 
+    description: 'Buku adaptasi dongeng "Puss in Boots" ke dalam bahasa dan aksara Jawa yang diperkaya dengan ilustrasi bernuansa Arab-Islam.',
   },
   {
     rank: 2,
-    judul: 'Moesoeh dalam Selimoet',
-    penulis: 'Penulis belum tercatat',
-    kategori: 'Novel',
-    label: 'Cat. No. 014',
-    keterangan: 'Cetakan lawas bersampul kain, saksi era awal penerbitan sastra Indonesia.',
-    sampul: 'assets/moesoeh_dalam_selimoet.png',
+    title: 'Moesoeh dalam Selimoet',
+    author: 'Agatha Christie',
+    language: 'Indonesia',
+    coverUrl: 'src/assets/top/moesoeh_dalam_selimoet.png',
+    description: 'Buku terjemahan novel "The Secret Adversary" (1922) yang diterbitkan dalam jilid I dan II.',
+    subject: 'Novel Fiksi Indonesia',
   },
   {
     rank: 3,
-    judul: 'Suluk Plencung',
-    penulis: 'Penyalin tidak diketahui',
-    kategori: 'Aksara',
-    label: 'Cat. No. 027',
-    keterangan: 'Naskah beraksara daerah yang tergolong langka dan memerlukan penanganan khusus.',
-    sampul: 'assets/suluk_plencung.png',
+    title: 'Suluk Plencung',
+    publication: 'Yogyakarta : Yopdyog, 2003',
+    subject: 'Kesusastraan Jawa-- Tembang',
+    coverUrl: 'src/assets/top/suluk_plencung.png',
+    description: 'Teks terdiri dari Dasanama, Yudaganara, Ajisaka, Piwulang, Sastra Gendhing, Nitisastra, Ngelmu, Dongeng, Ki Kewala, Wulangreh, Seh Tekawerdi, Sayid Dullah, Resi Ciptadriya, dan Suluk Pamungkas.',
+    language: 'Jawa',
+    workType: 'Puisi',
   },
 ]
 
@@ -36,15 +36,11 @@ const PODIUM = {
   3: { order: 'sm:order-3', height: 'h-56 sm:h-64', width: 'w-36 sm:w-44' },
 }
 
-// Menjamin path gambar tetap benar walau situs di-deploy ke sub-folder
-// GitHub Pages (mis. https://user.github.io/repo/).
 function resolveSrc(path) {
   if (!path) return null
   return `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`
 }
 
-// Placeholder sampul — mengikuti template yang sama dengan FeaturedBookCard
-// dan BookCard: gradient navy + judul buku di tengah, font-display italic.
 function CoverPlaceholder({ title }) {
   return (
     <div className="grid h-full w-full place-items-center bg-gradient-to-br from-navy-500 to-navy-800 p-3 text-center">
@@ -57,57 +53,52 @@ function CoverPlaceholder({ title }) {
 
 function PodiumCard({ item, isOpen, onToggle, index }) {
   const [failed, setFailed] = useState(false)
-  const showPhoto = Boolean(item.sampul) && !failed
+  
+  const showPhoto = Boolean(item.coverUrl) && !failed
   const p = PODIUM[item.rank]
 
   return (
     <div className={`podium-card flex flex-col items-center ${p.order}`} style={{ animationDelay: `${index * 110}ms` }}>
-      {/* Konteks perspektif 3D, terpisah dari animasi masuk supaya tidak bentrok */}
       <div className="book-perspective">
         <button
           type="button"
           onClick={onToggle}
           aria-pressed={isOpen}
-          aria-label={`${item.judul}, peringkat ${item.rank}. ${isOpen ? 'Tutup' : 'Buka'} detail.`}
+          aria-label={`${item.title}, peringkat ${item.rank}. ${isOpen ? 'Tutup' : 'Buka'} detail.`}
           className={`book-tilt group relative ${p.width} ${p.height} overflow-hidden rounded-r-2xl rounded-l-md shadow-xl ring-1 ring-black/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gilt-400 ${
             isOpen ? 'is-open ring-2 ring-gilt-400/70' : ''
           }`}
         >
           {showPhoto ? (
             <img
-              src={resolveSrc(item.sampul)}
-              alt={`Sampul ${item.judul}`}
+              src={resolveSrc(item.coverUrl)} 
+              alt={`Sampul ${item.title}`} 
               className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
               onError={() => setFailed(true)}
             />
           ) : (
-            <CoverPlaceholder title={item.judul} />
+            <CoverPlaceholder title={item.title} /> 
           )}
 
-          {/* kerangka fisik buku: bayangan jilid kiri + tepi halaman kanan */}
           <span className="book-spine-shadow" aria-hidden="true" />
           <span className="book-page-edge" aria-hidden="true" />
 
-          {/* scrim bawah, senada dengan perlakuan foto hero */}
           <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ink-900/90 via-ink-900/40 to-transparent" />
 
-          {/* badge peringkat */}
           <span className="absolute left-3 top-3 grid h-8 w-8 place-items-center rounded-full border border-gilt-400 bg-ink-900/70 font-display text-sm italic text-gilt-300 backdrop-blur-sm transition-transform duration-300 group-hover:scale-110">
             {item.rank}
           </span>
 
-          {/* judul + penulis overlay */}
           <div className="absolute inset-x-0 bottom-0 p-4 text-left">
-            <span className="text-[10px] uppercase tracking-wide text-gilt-300/80">{item.kategori}</span>
+            <span className="text-[10px] uppercase tracking-wide text-gilt-300/80">{item.subject}</span>
             <h3 className="mt-0.5 font-display text-base font-semibold leading-snug text-white sm:text-lg">
-              {item.judul}
+              {item.title} 
             </h3>
-            <p className="mt-0.5 text-xs text-white/70">{item.penulis}</p>
+            <p className="mt-0.5 text-xs text-white/70 line-clamp-1">{item.author}</p> 
           </div>
         </button>
       </div>
 
-      {/* Panel keterangan singkat — terbuka saat kartu ditekan */}
       <div
         className={`grid w-full transition-[grid-template-rows] duration-300 ease-out ${
           isOpen ? 'mt-2 grid-rows-[1fr]' : 'grid-rows-[0fr]'
@@ -115,13 +106,13 @@ function PodiumCard({ item, isOpen, onToggle, index }) {
       >
         <div className="overflow-hidden">
           <p className="rounded-lg border border-navy-500/15 bg-parchment-100/70 px-3 py-2 text-xs leading-relaxed text-ink-800/75 dark:border-gilt-400/15 dark:bg-ink-800/60 dark:text-parchment-100/75">
-            {item.keterangan}
+            {item.description} 
           </p>
         </div>
       </div>
 
       <p className="mt-2 text-[10px] uppercase tracking-wide text-ink-800/35 dark:text-parchment-100/35">
-        {item.label}
+        Bahasa {item.language} 
       </p>
     </div>
   )

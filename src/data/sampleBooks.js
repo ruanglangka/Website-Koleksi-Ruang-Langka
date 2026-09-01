@@ -1,25 +1,25 @@
 // Data contoh (mock) — dipakai HANYA jika VITE_API_URL belum diatur,
 // supaya tampilan tetap bisa dicoba sebelum Google Apps Script disambungkan.
 // Setelah API asli terhubung, file ini tidak lagi dipakai (lihat booksApi.js).
+//
+// PENTING: skema field di sini disamakan dengan hasil pemetaan COLUMN_MAP
+// pada Code.gs (aksara, nomorInduk, lokasiRak, judul, kondisi), supaya
+// sorting/pencarian saat development (tanpa VITE_API_URL) berperilaku sama
+// persis dengan saat sudah tersambung ke Google Spreadsheet asli.
 
-const KATEGORI = ['Manuskrip', 'Naskah Jawa', 'Aksara Kuno', 'Novel Lawas', 'Peta Kuno']
+const AKSARA_LIST = ['Jawa', 'Latin', 'Arab Pegon', 'Bali', 'Sunda']
 
 function generate(n) {
   const arr = []
   for (let i = 1; i <= n; i++) {
-    const kategori = KATEGORI[i % KATEGORI.length]
+    const aksara = AKSARA_LIST[i % AKSARA_LIST.length]
     arr.push({
       id: String(i),
-      judul: `${kategori} Koleksi No. ${i}`,
-      penulis: `Penulis/Penyalin ${((i * 7) % 40) + 1}`,
-      kategori,
-      tahun: 1800 + ((i * 3) % 200),
-      bahasa: i % 3 === 0 ? 'Jawa' : i % 3 === 1 ? 'Melayu' : 'Belanda',
-      lokasiRak: `R.${1 + (i % 12)}-${1 + (i % 30)}`,
-      kondisi: i % 5 === 0 ? 'Rapuh' : 'Baik',
-      deskripsi:
-        'Deskripsi contoh koleksi. Data lengkap akan tampil otomatis setelah Google Spreadsheet dan Apps Script terhubung.',
-      sampul: '',
+      judul: `Koleksi Naskah No. ${i}`,
+      lokasiRak: `L ${100 + (i % 800)}.${1 + (i % 9)} ${String.fromCharCode(65 + (i % 26))}${String.fromCharCode(65 + ((i * 3) % 26))}`,
+      kondisi: i % 5 === 0 ? 'Rusak' : 'Tersedia',
+      aksara,
+      nomorInduk: `${60000 + i}-PD/A.${19 + (i % 6)}`,
     })
   }
   return arr
@@ -33,13 +33,12 @@ export function getMockResponse({
   limit = 20,
   search = '',
   searchField = 'semua',
-  kategori = '',
   sortBy = 'judul',
   sortDir = 'asc',
   id,
 }) {
   if (action === 'categories') {
-    return { categories: KATEGORI }
+    return { categories: AKSARA_LIST }
   }
   if (action === 'featured') {
     return { items: ALL_BOOKS.slice(0, 3) }
@@ -48,28 +47,22 @@ export function getMockResponse({
     return { item: ALL_BOOKS.find((b) => b.id === String(id)) || null }
   }
 
+  // Field yang boleh dipakai untuk pencarian, sinkron dengan
+  // SEARCHABLE_FIELDS di Code.gs.
+  const SEARCHABLE_FIELDS = ['judul', 'lokasiRak', 'aksara', 'nomorInduk']
+
   // action === 'list'
   let filtered = ALL_BOOKS
   if (search) {
     const q = search.toLowerCase()
     filtered = filtered.filter((b) => {
-      if (searchField === 'semua') {
-        return (
-          b.judul.toLowerCase().includes(q) ||
-          b.penulis.toLowerCase().includes(q) ||
-          b.kategori.toLowerCase().includes(q) ||
-          String(b.tahun).includes(q) ||
-          b.lokasiRak.toLowerCase().includes(q) ||
-          b.id.toLowerCase().includes(q)
-        )
+      if (searchField && searchField !== 'semua' && SEARCHABLE_FIELDS.includes(searchField)) {
+        return String(b[searchField] ?? '').toLowerCase().includes(q)
       }
-      const value = b[searchField]
-      return value !== undefined && String(value).toLowerCase().includes(q)
+      return SEARCHABLE_FIELDS.some((f) => String(b[f] ?? '').toLowerCase().includes(q))
     })
   }
-  if (kategori) {
-    filtered = filtered.filter((b) => b.kategori === kategori)
-  }
+
   filtered = [...filtered].sort((a, b) => {
     const av = a[sortBy] ?? ''
     const bv = b[sortBy] ?? ''
