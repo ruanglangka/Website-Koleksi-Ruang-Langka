@@ -161,7 +161,7 @@ export default function AdminPanel() {
                 className="block h-11 w-11 object-contain dark:hidden"
               />
               <img
-                src={dayNight}
+                src={nightLogo}
                 alt="Logo Karsa Malam"
                 className="hidden h-11 w-11 object-contain dark:block"
               />
