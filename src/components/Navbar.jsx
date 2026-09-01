@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { useTheme } from '../context/ThemeContext.jsx'
-import dayLogo from '../../assets/icons/day.png'
-import nightLogo from '../../assets/icons/night.png'
+import dayLogo from '../assets/icons/day.png'
+import nightLogo from '../assets/icons/night.png'
 
 const PANDUAN_LINKS = [
   { to: '/panduan/fasilitas', label: 'Fasilitas Ruang Langka' },
