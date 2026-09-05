@@ -51,11 +51,11 @@ export default function Footer() {
           {/* ===== KOLOM 1: IDENTITAS & SOSIAL MEDIA ===== */}
           <div className="md:col-span-1">
             <h3 className="font-display text-2xl font-bold text-navy-700 dark:text-gilt-300">
-              Koleksi Ruang Langka
+              Koleksi Ruang Langka 
             </h3>
             {/* Warna teks diubah menyerupai teks diagram (ink-900 / parchment-100) */}
             <p className="mt-3 text-sm leading-relaxed text-ink-900/80 dark:text-parchment-100/80">
-              Eksplorasi warisan literasi Nusantara. Dikelola resmi oleh Balai Layanan Perpustakaan (Grhatama Pustaka) DPAD DIY.
+              Eksplorasi warisan literasi Nusantara. Dikelola resmi oleh Balai Layanan Perpustakaan DPAD DIY.
             </p>
             <div className="mt-6 flex gap-3">
               {SOCIALS.map((s) => (
