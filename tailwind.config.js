@@ -83,10 +83,21 @@ export default {
           '0%': { opacity: 0, transform: 'translateY(12px)' },
           '100%': { opacity: 1, transform: 'translateY(0)' },
         },
+        'mascot-float': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-4px)' },
+        },
+        'mascot-wave': {
+          '0%, 100%': { transform: 'rotate(0deg)' },
+          '25%': { transform: 'rotate(-8deg)' },
+          '75%': { transform: 'rotate(8deg)' },
+        },
       },
       animation: {
         'book-open': 'book-open 0.7s ease-in-out',
         'fade-up': 'fade-up 0.5s ease-out both',
+        'mascot-float': 'mascot-float 3s ease-in-out infinite',
+        'mascot-wave': 'mascot-wave 0.7s ease-in-out',
       },
     },
   },
